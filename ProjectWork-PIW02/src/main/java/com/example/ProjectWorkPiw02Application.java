@@ -10,6 +10,8 @@ public class ProjectWorkPiw02Application {
 		SpringApplication.run(ProjectWorkPiw02Application.class, args);
 //grwe		
 		// feder
+		
+		//pr
 	}
 
 }
