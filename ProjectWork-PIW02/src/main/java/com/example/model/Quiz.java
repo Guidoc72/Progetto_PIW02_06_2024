@@ -14,19 +14,19 @@ public class Quiz {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 	
 	@Column
 	@NotEmpty
-	private int id_linguaggio;
+	private Long id_linguaggio;
 
 	public Quiz() {}
 	
-	public Quiz(@NotEmpty int id_linguaggio) {
+	public Quiz(@NotEmpty Long id_linguaggio) {
 		
 		setId_linguaggio (id_linguaggio);
 	}
-	public Quiz(int id, @NotEmpty int id_linguaggio) {
+	public Quiz(Long id, @NotEmpty Long id_linguaggio) {
 		
 		setId(id);
 		setId_linguaggio (id_linguaggio);
@@ -35,19 +35,19 @@ public class Quiz {
 	
 	
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public int getId_linguaggio() {
+	public Long getId_linguaggio() {
 		return id_linguaggio;
 	}
 
-	public void setId_linguaggio(int id_linguaggio) {
+	public void setId_linguaggio(Long id_linguaggio) {
 		this.id_linguaggio = id_linguaggio;
 	}
 

@@ -17,11 +17,11 @@ public class Utente {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 	
 	@Column
 	@NotEmpty(message="il campo non può essere vuoto")
-	private String ruolo;
+	private Long ruolo;
 	
 	@Column(length = 50)
 	@NotEmpty(message="il campo non può essere vuoto")
@@ -49,7 +49,7 @@ public class Utente {
 	
 	public Utente() {}
 	
-	public Utente( @NotEmpty(message = "il campo non può essere vuoto") String ruolo,
+	public Utente( @NotEmpty(message = "il campo non può essere vuoto") Long ruolo,
 			@NotEmpty(message = "il campo non può essere vuoto") String nome,
 			@NotEmpty(message = "il campo non può essere vuoto") String cognome,
 			@NotEmpty(message = "il campo non può essere vuoto") @Email String mail,
@@ -65,7 +65,7 @@ public class Utente {
 		setAbilitato(abilitato);
 	}
 
-	public Utente(int id, @NotEmpty(message = "il campo non può essere vuoto") String ruolo,
+	public Utente(Long id, @NotEmpty(message = "il campo non può essere vuoto") Long ruolo,
 			@NotEmpty(message = "il campo non può essere vuoto") String nome,
 			@NotEmpty(message = "il campo non può essere vuoto") String cognome,
 			@NotEmpty(message = "il campo non può essere vuoto") @Email String mail,
@@ -81,7 +81,7 @@ public class Utente {
 		setAbilitato(abilitato);
 	}
 	
-	public Utente( @NotEmpty(message = "il campo non può essere vuoto") String ruolo,
+	public Utente( @NotEmpty(message = "il campo non può essere vuoto") Long ruolo,
 			@NotEmpty(message = "il campo non può essere vuoto") String nome,
 			@NotEmpty(message = "il campo non può essere vuoto") String cognome,
 			@NotEmpty(message = "il campo non può essere vuoto") @Email String mail,
@@ -119,19 +119,19 @@ public class Utente {
         
     }
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public String getRuolo() {
+	public Long getRuolo() {
 		return ruolo;
 	}
 
-	public void setRuolo(String ruolo) {
+	public void setRuolo(Long ruolo) {
 		this.ruolo = ruolo;
 	}
 

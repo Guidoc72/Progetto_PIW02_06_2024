@@ -13,7 +13,7 @@ public class Domanda_Risposta {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id_linguaggio;
+	private Long id_linguaggio;
 	
 	@Column(length = 500)
 	private String domanda;
@@ -30,7 +30,7 @@ public class Domanda_Risposta {
 
 	
 	
-public Domanda_Risposta(int id_linguaggio, String domanda, String risposta_uno, String risposta_due,
+public Domanda_Risposta(Long id_linguaggio, String domanda, String risposta_uno, String risposta_due,
 			String risposta_tre, String risposta_quattro, int risposta_esatta) {
 		
 		setId_linguaggio(id_linguaggio);
@@ -42,11 +42,11 @@ public Domanda_Risposta(int id_linguaggio, String domanda, String risposta_uno, 
 		setRisposta_esatta (risposta_esatta);
 	}
 
-	public int getId_linguaggio() {
+	public Long getId_linguaggio() {
 		return id_linguaggio;
 	}
 
-	public void setId_linguaggio(int id_linguaggio) {
+	public void setId_linguaggio(Long id_linguaggio) {
 		this.id_linguaggio = id_linguaggio;
 	}
 
