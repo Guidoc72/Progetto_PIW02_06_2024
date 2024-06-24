@@ -2,6 +2,7 @@ package com.example.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
@@ -9,6 +10,7 @@ import jakarta.persistence.Table;
 public class Quiz_Domanda {
 
 	@Column
+	@Id
 	private Long id_domanda;
 	
 	@Column
