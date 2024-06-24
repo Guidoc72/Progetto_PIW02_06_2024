@@ -8,13 +8,15 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="quiz_domande")
 public class Quiz_Domanda {
-
-	@Column
-	@Id
-	private Long id_domanda;
 	
 	@Column
+	@Id
 	private Long id_quiz;
+
+	@Column
+	private Long id_domanda;
+	
+
 	
 	public Quiz_Domanda() {}
 
