@@ -1,5 +1,5 @@
 package com.example.service;
 
-public class LinguaggioService {
+public class DocenteService {
 
 }

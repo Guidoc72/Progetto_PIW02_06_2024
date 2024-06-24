@@ -11,6 +11,7 @@ import jakarta.persistence.Table;
 @Table(name = "domande_risposte")
 public class Domanda_Risposta {
 	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id_linguaggio;
@@ -98,6 +99,12 @@ public Domanda_Risposta(Long id_linguaggio, String domanda, String risposta_uno,
 		this.risposta_esatta = risposta_esatta;
 	}
 	
+	@Override
+	public String toString() {
+		return "Domanda_Risposta [id_linguaggio=" + id_linguaggio + ", domanda=" + domanda + ", risposta_uno="
+				+ risposta_uno + ", risposta_due=" + risposta_due + ", risposta_tre=" + risposta_tre
+				+ ", risposta_quattro=" + risposta_quattro + ", risposta_esatta=" + risposta_esatta + "]";
+	}
 	
 	
 	
