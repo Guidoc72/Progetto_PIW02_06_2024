@@ -2,19 +2,27 @@ package com.example.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name="quiz_domande")
 public class Quiz_Domanda {
+	
 
-	@Column
 	@Id
-	private Long id_domanda;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	
 	@Column
 	private Long id_quiz;
+
+	@Column
+	private Long id_domanda;
+	
+
 	
 	public Quiz_Domanda() {}
 
