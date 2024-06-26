@@ -1,10 +1,15 @@
 package com.example.model;
 
+import java.util.Optional;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -14,7 +19,11 @@ public class Domanda_Risposta {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id_linguaggio;
+	private Long id;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_linguaggio") // Questo mappa il campo `id_linguaggio` nella tabella `domande_risposte`
+    private Linguaggio linguaggio;
 	
 	@Column(length = 500)
 	private String domanda;
@@ -30,25 +39,35 @@ public class Domanda_Risposta {
 	private int risposta_esatta;
 
 	
+    // Costruttori
+    public Domanda_Risposta() {}
+    
+    public Domanda_Risposta(Linguaggio linguaggio, String domanda, String risposta_uno, String risposta_due, String risposta_tre, String risposta_quattro, int risposta_esatta) {
+        this.linguaggio = linguaggio;
+        this.domanda = domanda;
+        this.risposta_uno = risposta_uno;
+        this.risposta_due = risposta_due;
+        this.risposta_tre = risposta_tre;
+        this.risposta_quattro = risposta_quattro;
+        this.risposta_esatta = risposta_esatta;
+    }
+
+    // Getters and Setters
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 	
-public Domanda_Risposta(Long id_linguaggio, String domanda, String risposta_uno, String risposta_due,
-			String risposta_tre, String risposta_quattro, int risposta_esatta) {
-		
-		setId_linguaggio(id_linguaggio);
-		setDomanda (domanda);
-		setRisposta_uno (risposta_uno);
-		setRisposta_due (risposta_due);
-		setRisposta_tre (risposta_tre);
-		setRisposta_quattro (risposta_quattro);
-		setRisposta_esatta (risposta_esatta);
+	public Linguaggio getLinguaggio() {
+	return linguaggio;
 	}
 
-	public Long getId_linguaggio() {
-		return id_linguaggio;
-	}
-
-	public void setId_linguaggio(Long id_linguaggio) {
-		this.id_linguaggio = id_linguaggio;
+	public void setLinguaggio(Linguaggio linguaggio) {
+		this.linguaggio = linguaggio;
 	}
 
 	public String getDomanda() {
@@ -101,18 +120,10 @@ public Domanda_Risposta(Long id_linguaggio, String domanda, String risposta_uno,
 	
 	@Override
 	public String toString() {
-		return "Domanda_Risposta [id_linguaggio=" + id_linguaggio + ", domanda=" + domanda + ", risposta_uno="
+		return "Domanda_Risposta [id=" + id + ", linguaggio=" + linguaggio + ", domanda=" + domanda + ", risposta_uno="
 				+ risposta_uno + ", risposta_due=" + risposta_due + ", risposta_tre=" + risposta_tre
 				+ ", risposta_quattro=" + risposta_quattro + ", risposta_esatta=" + risposta_esatta + "]";
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
