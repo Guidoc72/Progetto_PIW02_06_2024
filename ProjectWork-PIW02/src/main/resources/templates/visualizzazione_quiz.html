@@ -32,12 +32,12 @@
 
 <body>
 
-<h1 style="padding-left: 40% ; color:red" >Quiz 10 Domande Su :</h1>
+<h1 style="padding-left: 40% ; color:red" th:text="'Quiz 10 Domande Su : ' + ${nomeLinguaggio}"></h1>
 
 
 
  <div class="container mt-5">
-    <form action="/prova" method="post" th:object="${wrapper}">
+    <form action="/completato" method="post" th:object="${wrapper}">
         <div class="question" th:each="domandaRisposta, iterStat : ${wrapper.listaDomande1} ">
             <div style="padding-top: 50px">
             </div>
@@ -49,6 +49,8 @@
 
                 <h2 class="font-weight-bold" th:text="${domandaRisposta.domanda}" style = color:FireBrick></h2>
                 
+                
+                
                 <input type="hidden" th:name="listaDomande1[__${iterStat.index}__].id" th:value="${domandaRisposta.id}">
                 <input type="hidden" th:name="listaDomande1[__${iterStat.index}__].id_linguaggio" th:value="${domandaRisposta.id_linguaggio}">
                 <input type="hidden" th:name="listaDomande1[__${iterStat.index}__].domanda" th:value="${domandaRisposta.domanda}">
@@ -59,6 +61,7 @@
                
                 <input type="hidden" th:name="listaDomande1[__${iterStat.index}__].risposta_esatta" th:value="${domandaRisposta.risposta_esatta}">
                 
+                <input type="hidden" th:name="listaDomande1[__${iterStat.index}__].idQuiz" th:value="${wrapper.getListaDomande1().get(0).getIdQuiz()}">
                 
                 
                 

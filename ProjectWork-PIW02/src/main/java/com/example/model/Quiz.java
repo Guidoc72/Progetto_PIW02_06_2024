@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotEmpty;
 
 @Entity
@@ -19,6 +20,9 @@ public class Quiz {
 	@Column
 	@NotEmpty
 	private Long id_linguaggio;
+	
+	@Transient
+	private String nomeLinguaggio;
 
 	public Quiz() {}
 	
@@ -30,6 +34,12 @@ public class Quiz {
 		
 		setId(id);
 		setId_linguaggio (id_linguaggio);
+	}
+	public Quiz(Long id, @NotEmpty Long id_linguaggio, String nomeLinguaggio) {
+		
+		setId(id);
+		setId_linguaggio (id_linguaggio);
+		setNomeLinguaggio (nomeLinguaggio);
 	}
 	
 	
@@ -54,6 +64,14 @@ public class Quiz {
 	@Override
 	public String toString() {
 		return "Quiz [id=" + id + ", id_linguaggio=" + id_linguaggio + "]";
+	}
+
+	public String getNomeLinguaggio() {
+		return nomeLinguaggio;
+	}
+
+	public void setNomeLinguaggio(String nomeLinguaggio) {
+		this.nomeLinguaggio = nomeLinguaggio;
 	}
 	
 	
