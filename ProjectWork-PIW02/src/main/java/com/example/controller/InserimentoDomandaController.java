@@ -32,7 +32,8 @@ public class InserimentoDomandaController {
     	
     	
         model.addAttribute("formDomande", new Domanda_Risposta());
-        model.addAttribute("linguaggi", linguaggioService.getAllLinguaggi());
+        model.addAttribute("linguaggi", linguaggioService.getAllLinguaggi()); 
+
         
         System.out.println("Sono nel controller GET");
                        
@@ -67,7 +68,6 @@ public class InserimentoDomandaController {
         System.out.println("Oggetto nuovaDomanda creato");
 
 
-
         nuovaDomanda.setLinguaggio(linguaggio.get());
         nuovaDomanda.setDomanda(domanda);
         nuovaDomanda.setRisposta_uno(risposta_uno);
@@ -83,7 +83,7 @@ public class InserimentoDomandaController {
         System.out.println("--------------------------------");
         System.out.println("Domande inserite nel form: " + nuovaDomanda);
 
-        return "redirect:/LandingPageDocente";
+        return "redirect:/landingPageDocente";
     }
 
 

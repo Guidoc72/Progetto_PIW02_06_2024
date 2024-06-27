@@ -19,6 +19,8 @@ public class LinguaggioController {
 	@GetMapping("/inserimentoLinguaggio")
 	public String mostraInserimentoLinguaggio(Model model) {
 		
+		
+		//model.addAttribute("utenti", utenteService.getAllUtenti());
 		model.addAttribute("linguaggi", new Linguaggio());
 		System.out.println("Sono nel GET di inserimentoLinguaggio");
 		
@@ -41,7 +43,7 @@ public class LinguaggioController {
 		linguaggioService.salvaLinguaggio(nuovoLinguaggio);
 		System.out.println("Linguaggio salvato");
 		
-		return "redirect:/LandingPageDocente";
+		return "redirect:/landingPageDocente";
 	}
 	
 	

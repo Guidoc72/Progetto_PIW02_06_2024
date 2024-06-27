@@ -34,7 +34,7 @@ public class LinguaggioService {
         return linguaggioRepository.findAll();
     }
     
- // Metodo per recuperare un linguaggio per ID
+    // Metodo per recuperare un linguaggio per ID
     public Optional<Linguaggio> getLinguaggioById(Long id) {
         return linguaggioRepository.findById(id); 
     }

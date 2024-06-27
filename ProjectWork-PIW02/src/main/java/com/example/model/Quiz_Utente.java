@@ -13,7 +13,7 @@ public class Quiz_Utente {
 	@Id
 	private Long id_quiz;
 	@Column
-	private Long id_utenti;
+	private Long id_utente;
 	@Column
 	private boolean completato;
 	
@@ -21,9 +21,9 @@ public class Quiz_Utente {
 	public Quiz_Utente() {}
 	
 	
-	public Quiz_Utente(Long id_quiz, Long id_utenti, boolean completato) {
+	public Quiz_Utente(Long id_quiz, Long id_utente, boolean completato) {
 		setId_quiz (id_quiz);
-		setId_utenti (id_utenti);
+		setId_utente (id_utente);
 		setCompletato (completato);
 	}
 	
@@ -39,14 +39,14 @@ public class Quiz_Utente {
 
 
 
-	public Long getId_utenti() {
-		return id_utenti;
+	public Long getId_utente() {
+		return id_utente;
 	}
 
 
 
-	public void setId_utenti(Long id_utenti) {
-		this.id_utenti = id_utenti;
+	public void setId_utente(Long id_utente) {
+		this.id_utente = id_utente;
 	}
 
 
@@ -65,7 +65,7 @@ public class Quiz_Utente {
 	
 	@Override
 	public String toString() {
-		return "Quiz_Utente [id_quiz=" + id_quiz + ", id_utenti=" + id_utenti + ", completato=" + completato + "]";
+		return "Quiz_Utente [id_quiz=" + id_quiz + ", id_utenti=" + id_utente + ", completato=" + completato + "]";
 	}
 
 
