@@ -41,5 +41,13 @@ public class QuizController {
 		
 		return "redirect:/landingPageDocente";
 	}
+	
+	
+	@GetMapping("/creaQuiz")
+    public String showCreaQuiz() {
+        return "creaQuiz";  // Questo restituidce il template creaQuiz.html
+    }
+	
+	// PostMapping
 
 }

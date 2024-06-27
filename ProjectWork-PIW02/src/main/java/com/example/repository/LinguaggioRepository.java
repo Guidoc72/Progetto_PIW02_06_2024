@@ -12,6 +12,7 @@ public interface LinguaggioRepository extends JpaRepository<Linguaggio, Long>{
 	//boolean existsByLinguaggio(String nomeArgomento);
 
 	boolean existsByNomeArgomentoIgnoreCase(String nomeArgomento);
-
+	
+	
      
 }

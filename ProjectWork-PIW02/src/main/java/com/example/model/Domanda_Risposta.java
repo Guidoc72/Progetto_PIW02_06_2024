@@ -45,6 +45,9 @@ public class Domanda_Risposta {
 	@Transient
 	private int risposta_selezionata;
 	
+	@Transient
+	private Long idQuiz;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_linguaggio") // Questo mappa il campo `id_linguaggio` nella tabella `domande_risposte`
     private Linguaggio linguaggio;
@@ -95,7 +98,7 @@ public class Domanda_Risposta {
 	}
 	
 	public Domanda_Risposta(Long id, Long id_linguaggio, String domanda,int risposta_esatta, String risposta_uno, String risposta_due,    //lasciare o togliere id?
-			String risposta_tre, String risposta_quattro,  int risposta_selezionata) {
+			String risposta_tre, String risposta_quattro,  int risposta_selezionata, long idQuiz) {
 		
 		setId(id);
 		setId_linguaggio(id_linguaggio);
@@ -106,6 +109,7 @@ public class Domanda_Risposta {
 		setRisposta_tre (risposta_tre);
 		setRisposta_quattro (risposta_quattro);
 		setRisposta_selezionata (risposta_selezionata);
+		setIdQuiz (idQuiz);
 	}
 
 
@@ -191,6 +195,13 @@ public class Domanda_Risposta {
 	
 	public void setRisposta_selezionata(int risposta_selezionata) {
 		this.risposta_selezionata = risposta_selezionata;
+	}
+	public Long getIdQuiz() {
+		return idQuiz;
+	}
+	
+	public void setIdQuiz(long idQuiz) {
+		this.idQuiz = idQuiz;
 	}
 	
 	@Override
