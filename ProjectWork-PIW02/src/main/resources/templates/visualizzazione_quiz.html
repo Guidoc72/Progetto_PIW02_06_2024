@@ -31,13 +31,14 @@
 
 
 <body>
+		<header th:insert="~{fragments/navbar.html :: menu_fragment}"></header>
 
 <h1 style="padding-left: 40% ; color:red" th:text="'Quiz 10 Domande Su : ' + ${nomeLinguaggio}"></h1>
 
 
 
  <div class="container mt-5">
-    <form action="/completato" method="post" th:object="${wrapper}">
+    <form action="/completato" method="Post" th:object="${wrapper}">
         <div class="question" th:each="domandaRisposta, iterStat : ${wrapper.listaDomande1} ">
             <div style="padding-top: 50px">
             </div>
