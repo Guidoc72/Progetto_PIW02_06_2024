@@ -22,7 +22,7 @@ SecurityFilterChain chain(HttpSecurity http) throws Exception {
 
 //		.requestMatchers(HttpMethod.POST).hasAuthority("Studente") // cambiarlo in plurale
 		.requestMatchers("/home_utente.html","/visualizzazione_quiz.html","risultato_quiz.html").hasAuthority("Studente")
-		.requestMatchers("/LandingPageDocente","/creaQuiz","/inserimentoDomanda","inserimentoLinguaggio","modificaStudente").hasAuthority("Docente")
+		.requestMatchers("/landingPageDocente","/creaQuiz","/inserimentoDomanda","inserimentoLinguaggio","modificaStudente").hasAuthority("Docente")
 		.anyRequest().permitAll()
 		
 		.and()

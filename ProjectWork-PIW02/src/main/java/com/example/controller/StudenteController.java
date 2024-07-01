@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -45,6 +46,7 @@ import com.example.service.UtenteService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.Session;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.validation.Valid;
 
 
 @Controller
@@ -281,8 +283,12 @@ public class StudenteController {
 		
 	}
 	@PostMapping("/registrazioneUtente")
-	public String getRegistrazioneCompletata(@ModelAttribute("utente") Utente utente,Model model,@RequestParam String password2) {
+	public String getRegistrazioneCompletata(@Valid @ModelAttribute("utente") Utente utente, BindingResult bindingResult, Model model, @RequestParam String password2) {
 		
+		 // Verifica gli errori di validazione
+	    if (bindingResult.hasErrors()) {
+	        return "registrazione";
+	    }
 	
 		
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
