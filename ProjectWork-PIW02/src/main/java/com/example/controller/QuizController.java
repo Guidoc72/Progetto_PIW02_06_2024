@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.model.Linguaggio;
 import com.example.model.Quiz;
+import com.example.model.UserDetailsImpl;
 import com.example.model.Utente;
+import com.example.repository.RuoloRepository;
+import com.example.repository.UtenteRepository;
 import com.example.service.LinguaggioService;
 import com.example.service.QuizService;
 import com.example.service.Quiz_UtenteService;
@@ -33,10 +39,34 @@ public class QuizController {
 	@Autowired
 	private LinguaggioService linguaggioService;
 	
+	@Autowired
+	UtenteRepository utenteRepository;
+	
+	@Autowired
+	RuoloRepository ruoloRepository;
 	
 	@GetMapping("/assegnazioneQuizStudente")
 	public String mostraAssegnazioneQuizStudente(Model model) {
+		String mail = null;								/////////////////////////////////// INIZIO
+		String ruolo = null;
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		boolean connesso = true;
+		 if (authentication != null && authentication.isAuthenticated()) {							
+			    Object principal = authentication.getPrincipal();
+			    if (principal.equals("anonymousUser")) {	
+			    	connesso = false;													/// METODO PER NAVBAR
+			  } 	
+			    if (principal instanceof UserDetails) {
+				      UserDetails user = (UserDetails) principal;
+				      UserDetailsImpl user2 = (UserDetailsImpl) user;
+				       mail = user2.getUsername(); 
+				       Utente utente = utenteRepository.findBymail(mail);
+				       ruolo = ruoloRepository.findByid(utente.getRuolo());
+				    } 
+		 }
 		
+	model.addAttribute("connesso",connesso);
+	model.addAttribute("ruolo",ruolo);					//////////////////////////////////// FINE
 		model.addAttribute("quizzes", quizService.getAllQuizzes());
 		model.addAttribute("utenti", utenteService.getAllUtenti());
 		
@@ -92,6 +122,26 @@ public class QuizController {
 	
     @GetMapping("/creaQuiz")
     public String showCreaQuizPage(Model model) {
+    	String mail = null;								/////////////////////////////////// INIZIO
+		String ruolo = null;
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		boolean connesso = true;
+		 if (authentication != null && authentication.isAuthenticated()) {							
+			    Object principal = authentication.getPrincipal();
+			    if (principal.equals("anonymousUser")) {	
+			    	connesso = false;													/// METODO PER NAVBAR
+			  } 	
+			    if (principal instanceof UserDetails) {
+				      UserDetails user = (UserDetails) principal;
+				      UserDetailsImpl user2 = (UserDetailsImpl) user;
+				       mail = user2.getUsername(); 
+				       Utente utente = utenteRepository.findBymail(mail);
+				       ruolo = ruoloRepository.findByid(utente.getRuolo());
+				    } 
+		 }
+		
+	model.addAttribute("connesso",connesso);
+	model.addAttribute("ruolo",ruolo);					//////////////////////////////////// FINE
         List<Linguaggio> linguaggi = linguaggioService.getAllLinguaggi();
         model.addAttribute("linguaggi", linguaggi);
         return "creaQuiz"; 
