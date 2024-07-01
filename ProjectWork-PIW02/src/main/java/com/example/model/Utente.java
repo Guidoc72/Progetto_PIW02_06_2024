@@ -41,9 +41,6 @@ public class Utente {
 	@Pattern(regexp="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=-])[a-zA-Z0-9!@#$%^&*()_+=-]{8,}$",message="la password deve essere lunga almeno 8 caratteri, contenere almeno una lettera maiuscola, un numero e un carattere speciale")
 	private String password_utente;
 	
-	@Column
-	private boolean abilitato;
-	
 	@Transient // indica che il dato non è presente del DB
 	private String codiceDocente;
 	
@@ -62,7 +59,6 @@ public class Utente {
 		setCognome(cognome);
 		setMail(mail);
 		setPassword_utente(password_utente);
-		setAbilitato(abilitato);
 	}
 
 	public Utente(Long id, @NotEmpty(message = "il campo non può essere vuoto") Long ruolo,
@@ -78,15 +74,13 @@ public class Utente {
 		setCognome(cognome);
 		setMail(mail);
 		setPassword_utente(password_utente);
-		setAbilitato(abilitato);
 	}
 	
 	public Utente( @NotEmpty(message = "il campo non può essere vuoto") Long ruolo,
 			@NotEmpty(message = "il campo non può essere vuoto") String nome,
 			@NotEmpty(message = "il campo non può essere vuoto") String cognome,
 			@NotEmpty(message = "il campo non può essere vuoto") @Email String mail,
-			@NotEmpty @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=-])[a-zA-Z0-9!@#$%^&*()_+=-]{8,}$", message = "la password deve essere lunga almeno 8 caratteri, contenere almeno una lettera maiuscola, un numero e un carattere speciale") String password_utente,
-			boolean abilitato, String codiceDocente) {
+			@NotEmpty @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=-])[a-zA-Z0-9!@#$%^&*()_+=-]{8,}$", message = "la password deve essere lunga almeno 8 caratteri, contenere almeno una lettera maiuscola, un numero e un carattere speciale") String password_utente, String codiceDocente) {
 
 	
 		setRuolo(ruolo);
@@ -94,7 +88,6 @@ public class Utente {
 		setCognome(cognome);
 		setMail(mail);
 		setPassword_utente(password_utente);
-		setAbilitato(abilitato);
 		setCodiceDocente(codiceDocente);
 	}
 	
@@ -166,20 +159,12 @@ public class Utente {
 	public void setPassword_utente(String password_utente) {
 		this.password_utente = password_utente;
 	}
-
-	public boolean isAbilitato() {
-		return abilitato;
-	}
-
-	public void setAbilitato(boolean abilitato) {
-		this.abilitato = abilitato;
-	}
 	
 
 	@Override
 	public String toString() {
 		return "Utente [id=" + id + ", ruolo=" + ruolo + ", nome=" + nome + ", cognome=" + cognome + ", mail=" + mail
-				+ ", password_utente=" + password_utente + ", abilitato=" + abilitato + "]";
+				+ ", password_utente=" + password_utente + ", abilitato=" + "]";
 	}
 
 	public String getCodiceDocente() {

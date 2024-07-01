@@ -7,6 +7,7 @@ import com.example.model.Utente;
 import com.example.repository.UtenteRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UtenteService {
@@ -36,7 +37,17 @@ public class UtenteService {
 
     // Metodo transazionale per aggiornare l'utente con un dato ID
     @Transactional
-    public void updateUtente(Long id, String nome, String cognome, String mail) {
-        utenteRepository.updateUtente(id, nome, cognome, mail);
+    public void updateUtente(Long id, String nome, String cognome, String mail, Long ruolo) {
+    	
+    	Optional<Utente> utente = Optional.of(utenteRepository.findById(id).orElseThrow(() -> new RuntimeException("Utente non trovato")));;
+    	
+    	utente.get().setNome(nome);
+    	utente.get().setCognome(cognome);
+    	utente.get().setMail(mail);
+    	utente.get().setRuolo(ruolo);
+    	
+        utenteRepository.save(utente);
     }
+    
+
 }

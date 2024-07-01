@@ -30,11 +30,13 @@ public class Quiz {
 		
 		setId_linguaggio (id_linguaggio);
 	}
+	
 	public Quiz(Long id, @NotEmpty Long id_linguaggio) {
 		
 		setId(id);
 		setId_linguaggio (id_linguaggio);
 	}
+	
 	public Quiz(Long id, @NotEmpty Long id_linguaggio, String nomeLinguaggio) {
 		
 		setId(id);
@@ -42,9 +44,6 @@ public class Quiz {
 		setNomeLinguaggio (nomeLinguaggio);
 	}
 	
-	
-	
-
 	public Long getId() {
 		return id;
 	}

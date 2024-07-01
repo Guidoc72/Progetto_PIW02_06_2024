@@ -1,5 +1,8 @@
 package com.example.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,8 +10,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.model.Linguaggio;
+import com.example.model.Quiz;
+import com.example.model.Utente;
 import com.example.service.LinguaggioService;
 import com.example.service.QuizService;
+import com.example.service.Quiz_UtenteService;
 import com.example.service.UtenteService;
 
 @Controller
@@ -17,37 +24,89 @@ public class QuizController {
 	@Autowired
 	private QuizService quizService;
 	
+	@Autowired
+	private Quiz_UtenteService quiz_UtenteService;
 	
 	@Autowired	
 	private UtenteService utenteService;
 	
+	@Autowired
+	private LinguaggioService linguaggioService;
+	
+	
 	@GetMapping("/assegnazioneQuizStudente")
 	public String mostraAssegnazioneQuizStudente(Model model) {
 		
-		model.addAttribute("quiz", quizService.getAllQuiz()); // come linguaggi
-		model.addAttribute("studenti", utenteService.getAllUtenti());
+		model.addAttribute("quizzes", quizService.getAllQuizzes());
+		model.addAttribute("utenti", utenteService.getAllUtenti());
 		
 		return "assegnazioneQuizStudente";
 	}
 	
 	@PostMapping("/assegnazioneQuizStudente")
 	public String assegnazioneQuizStudente(
-			@RequestParam("quiz.id") Long quizId,
-			@RequestParam("utente.id") Long utenteId,
+			@RequestParam Long quizId, 
+			@RequestParam List<Long> utenteIdList,
 			Model model
 			) {
 		
-		 
+        List<String> successMessages = new ArrayList<>();
+        List<String> errorMessages = new ArrayList<>();
 		
-		return "redirect:/landingPageDocente";
+        for (Long utenteId : utenteIdList) {
+        	
+        	System.out.println("QUIZ -> " + quizId + " | UTENTE -> " + utenteId);
+        	
+            boolean exists = quiz_UtenteService.checkIfQuizUtenteExists(quizId, utenteId);      
+            
+            if (exists) {
+            	errorMessages.add("Studente già assegnato al quiz selezionato");
+            	model.addAttribute("errorMessages", errorMessages);
+                model.addAttribute("quizzes", quizService.getAllQuizzes());
+                model.addAttribute("utenti", utenteService.getAllUtenti());
+                return "assegnazioneQuizStudente";
+            } else {
+            	quizService.assegnaQuiz(quizId, utenteIdList);
+            	
+            	Utente utente = utenteService.findUtenteById(utenteId);
+            	Optional<Quiz> quiz = quizService.getQuizById(quizId);
+            	            	
+            	Optional<Linguaggio> linguaggio = linguaggioService.getLinguaggioById(quiz.get().getId());
+       		 	String nomeLinguaggio= linguaggio.get().getNomeArgomento();
+            	            	            	
+            	successMessages.add(utente.getNome() + " " + utente.getCognome() + " " + utente.getMail() + " assegnato a " + nomeLinguaggio + " QUIZ " + quiz.get().getId());
+            	
+            }
+        }
+        
+        model.addAttribute("successMessages", successMessages);
+        System.err.println("Messaggio di successo INVIATO");
+        model.addAttribute("errorMessages", errorMessages);
+        System.err.println("Messaggio di errore INVIATO");
+        model.addAttribute("quizzes", quizService.getAllQuizzes());
+        model.addAttribute("utenti", utenteService.getAllUtenti());
+		
+		return "assegnazioneQuizStudente";
 	}
 	
 	
-	@GetMapping("/creaQuiz")
-    public String showCreaQuiz() {
-        return "creaQuiz";  // Questo restituidce il template creaQuiz.html
+    @GetMapping("/creaQuiz")
+    public String showCreaQuizPage(Model model) {
+        List<Linguaggio> linguaggi = linguaggioService.getAllLinguaggi();
+        model.addAttribute("linguaggi", linguaggi);
+        return "creaQuiz"; 
     }
 	
-	// PostMapping
+    @PostMapping("/creaQuiz")
+    public String createQuizWithRandomDomande(@RequestParam("linguaggioId") Long linguaggioId) {
+        try {
+            // Crea un nuovo quiz associato al linguaggio e assegna 10 domande casuali
+            quizService.createQuizWithRandomDomande(linguaggioId);
+        } catch (IllegalArgumentException e) {
+            return "redirect:/error";
+        }
+
+        return "redirect:/landingPageDocente"; 
+    }
 
 }

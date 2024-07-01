@@ -1,5 +1,6 @@
 package com.example.repository;
 
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -17,5 +18,15 @@ public interface Domanda_RispostaRepository extends JpaRepository<Domanda_Rispos
 	// Studente
 	@Query("select d from Domanda_Risposta d Where d.id = :id") 
 	public Domanda_Risposta findByid(@Param("id") Long id);
+	
+
+	// Docente
+ 	@Query(value = "SELECT * FROM domande_risposte ORDER BY RAND() LIMIT 10", nativeQuery = true)
+    List<Domanda_Risposta> findRandomDomande();
+	  
+    
+    // Docente
+    @Query(value = "SELECT * FROM domande_risposte WHERE id_linguaggio = :linguaggioId ORDER BY RAND() LIMIT 10", nativeQuery = true)
+    List<Domanda_Risposta> findRandomDomandeByLinguaggioId(@Param("linguaggioId") Long linguaggioId);
 
 }

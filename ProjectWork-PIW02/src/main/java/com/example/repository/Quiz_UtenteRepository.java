@@ -23,4 +23,7 @@ public interface Quiz_UtenteRepository extends JpaRepository<Quiz_Utente, Long>{
 	@Query("update Quiz_Utente q set q.completato = true where q.id_utente = :id_utente and q.id_quiz = :id_quiz")
 	void updateCompletato(@Param("id_utente") Long id_utente, @Param("id_quiz") Long id_quiz);
 	
+    @Query("SELECT CASE WHEN COUNT(q) > 0 THEN true ELSE false END FROM Quiz_Utente q WHERE q.id_quiz = :id_quiz AND q.id_utente = :id_utente")
+    boolean existsByIdQuizAndIdUtente(@Param("id_quiz") Long id_quiz, @Param("id_utente") Long id_utente);
+	
 }

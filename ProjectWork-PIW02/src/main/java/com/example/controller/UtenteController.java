@@ -32,6 +32,7 @@ public class UtenteController {
             @RequestParam("nome") String nome,
             @RequestParam("cognome") String cognome,
             @RequestParam("mail") String mail,
+            @RequestParam("ruolo") Long ruolo,
             Model model) {
 
         // Verifica che i parametri non siano vuoti prima di procedere
@@ -44,11 +45,11 @@ public class UtenteController {
 
         // Chiamata al servizio per aggiornare l'utente nel database
         try {
-            utenteService.updateUtente(id, nome, cognome, mail);
+            utenteService.updateUtente(id, nome, cognome, mail, ruolo);
             // Se l'aggiornamento va a buon fine, reindirizza alla pagina principale per il docente
             
             // Stampa dati utente aggiornati
-            System.out.println("UTENTE AGGIORNATO CON SUCCESSO: \n" + "[" + id + "]" + "[" + nome + "]" + "[" + cognome + "]" + "[" + mail + "]");
+            System.out.println("UTENTE AGGIORNATO CON SUCCESSO: \n" + "[ id: " + id + " ]" + "[ nome: " + nome + " ]" + "[ cognome: " + cognome + " ]" + "[ mail: " + mail + "]" + "[ ruolo: " + ruolo + "]");
             
             return "redirect:/landingPageDocente";
         } catch (Exception e) {

@@ -1,5 +1,7 @@
 package com.example.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,8 +21,10 @@ public interface UtenteRepository extends JpaRepository<Utente, Long> {
     // Query customizzata per aggiornare i campi di un utente specifico
     @Modifying
     @Transactional
-    @Query("update Utente u set u.nome = :nome, u.cognome = :cognome, u.mail = :mail where u.id = :id_utente")
-    void updateUtente(@Param("id_utente") Long id_utente, @Param("nome") String nome, @Param("cognome") String cognome,
-            @Param("mail") String mail);
+    @Query("update Utente u set u.nome = :nome, u.cognome = :cognome, u.mail = :mail, u.ruolo = :ruolo where u.id = :id_utente")
+    void updateUtente(@Param("id_utente") Long id_utente, @Param("nome") String nome, @Param("cognome") String cognome, @Param("mail") String mail, @Param("ruolo") Long ruolo);
+
+    // salva oggetto Utente Optional
+	void save(Optional<Utente> utente);
 
 }

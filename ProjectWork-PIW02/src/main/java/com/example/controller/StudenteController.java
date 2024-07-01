@@ -79,16 +79,17 @@ public class StudenteController {
 		long idQuiz=quiz.getId();
 		
 		Optional<Linguaggio> linguaggio = linguaggioService.getLinguaggioById(quiz.getId());
-		 String nomeLinguaggio= linguaggio.get().getNomeArgomento();						// estrapolo il nome dell'argomento del quiz
+		String nomeLinguaggio= linguaggio.get().getNomeArgomento();// estrapolo il nome dell'argomento del quiz
 		
-		 List<Domanda_Risposta>listaDomande1 =  service.findDomanda(quiz); //popolo la lista delle 10 domande attraverso le query del DB
-		 DomandeRisposteWrapper wrapper = new DomandeRisposteWrapper();
-     
-     wrapper.setListaDomande1(listaDomande1); // setto la lista nel wrapper
-     wrapper.getListaDomande1().get(0).setIdQuiz(idQuiz);
-     model.addAttribute("wrapper", wrapper); // aggiungo il wrapper con all'interno al lista nel model
-     model.addAttribute("nomeLinguaggio", nomeLinguaggio);
+		List<Domanda_Risposta>listaDomande1 =  service.findDomanda(quiz); //popolo la lista delle 10 domande attraverso le query del DB
+		DomandeRisposteWrapper wrapper = new DomandeRisposteWrapper();
+		 
+		wrapper.setListaDomande1(listaDomande1); // setto la lista nel wrapper
+		wrapper.getListaDomande1().get(0).setIdQuiz(idQuiz);
 		
+		model.addAttribute("wrapper", wrapper); // aggiungo il wrapper con all'interno al lista nel model
+		model.addAttribute("nomeLinguaggio", nomeLinguaggio);
+
 
 		return "visualizzazione_quiz";
 		
