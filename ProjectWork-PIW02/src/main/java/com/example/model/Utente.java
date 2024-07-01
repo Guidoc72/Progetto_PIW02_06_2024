@@ -12,6 +12,7 @@ import jakarta.persistence.Transient;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 @Entity
@@ -23,7 +24,7 @@ public class Utente {
 	private Long id;
 	
 	@Column
-	@NotEmpty(message="il campo non può essere vuoto")
+	@NotNull(message="il campo non può essere vuoto")
 	private Long ruolo;
 	
 	@Column(length = 50)
