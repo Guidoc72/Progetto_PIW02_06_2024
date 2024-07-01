@@ -60,7 +60,7 @@
                     <div class="col-md-2"></div>
                     <div class="col-md-8">
                         <div class="mb-3">
-                            <select th:field="*{id}" class="form-select" aria-label="Default select example" id="selectUtente">
+                            <select th:field="${Studenti.id}" class="form-select" aria-label="Default select example" id="selectUtente">
                                 <option th:each="utente : ${Utente}"
                                         th:value="${utente.id}"
                                         th:text="${utente.nome + ' ' + utente.cognome + ' (' + utente.mail + ')'}"

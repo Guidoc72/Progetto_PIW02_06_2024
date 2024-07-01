@@ -35,16 +35,28 @@ public class UtenteController {
             @RequestParam("ruolo") Long ruolo,
             Model model) {
 
+    	System.out.println("DATI PROVENTINTI DAL GETMAPPING -> " + id + nome + cognome + mail + ruolo);
+    	
+    	System.out.println("-------- SONO NEL POST MAPPING ---------");
+    	
         // Verifica che i parametri non siano vuoti prima di procedere
         if (nome.isEmpty() || cognome.isEmpty() || mail.isEmpty()) {
+        	
+        	System.out.println("------- CONTROLLO SE I CAMPI SONO VUOTI ---------");
+        	
             // Se uno dei parametri è vuoto, aggiunge un messaggio di errore al modello
             model.addAttribute("error", "Tutti i campi sono obbligatori.");
+            
+            System.err.println("-------- ERRORE CAMPI VUOTI ---------");
+            
             // Ritorna alla pagina di modifica con il messaggio di errore
             return "modificaStudente";
         }
 
+        System.err.println("------ SONO FUORI IL TRY / CATCH -------");
         // Chiamata al servizio per aggiornare l'utente nel database
         try {
+        	System.out.println("------- TRY -> PROVO AD AGGIORNARE I DATI -------");
             utenteService.updateUtente(id, nome, cognome, mail, ruolo);
             // Se l'aggiornamento va a buon fine, reindirizza alla pagina principale per il docente
             
@@ -53,6 +65,9 @@ public class UtenteController {
             
             return "redirect:/landingPageDocente";
         } catch (Exception e) {
+        	
+        	System.out.println("------ CATCH -> SONO NEL CATCH: ERRORE");
+        	
             // Se si verifica un'eccezione durante l'aggiornamento, gestisce l'errore
             model.addAttribute("error", "Si è verificato un errore durante l'aggiornamento dell'utente.");
             // Ritorna alla pagina di modifica con un messaggio di errore
