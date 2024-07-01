@@ -1,5 +1,7 @@
 package com.example.model;
 
+import org.hibernate.validator.constraints.UniqueElements;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,12 +9,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 
 @Entity
-@Table(name = "utenti")
+@Table(name = "utenti",uniqueConstraints = @UniqueConstraint (columnNames = "mail"))
 public class Utente {
 	
 	@Id
@@ -43,6 +46,9 @@ public class Utente {
 	
 	@Transient // indica che il dato non è presente del DB
 	private String codiceDocente;
+	
+	@Column(length = 200)
+	private String token;
 	
 	public Utente() {}
 	
@@ -80,8 +86,7 @@ public class Utente {
 			@NotEmpty(message = "il campo non può essere vuoto") String nome,
 			@NotEmpty(message = "il campo non può essere vuoto") String cognome,
 			@NotEmpty(message = "il campo non può essere vuoto") @Email String mail,
-			@NotEmpty @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=-])[a-zA-Z0-9!@#$%^&*()_+=-]{8,}$", message = "la password deve essere lunga almeno 8 caratteri, contenere almeno una lettera maiuscola, un numero e un carattere speciale") String password_utente, String codiceDocente) {
-
+			@NotEmpty @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=-])[a-zA-Z0-9!@#$%^&*()_+=-]{8,}$", message = "la password deve essere lunga almeno 8 caratteri, contenere almeno una lettera maiuscola, un numero e un carattere speciale") String password_utente, String codiceDocente, String token) {
 	
 		setRuolo(ruolo);
 		setNome(nome);
@@ -89,6 +94,7 @@ public class Utente {
 		setMail(mail);
 		setPassword_utente(password_utente);
 		setCodiceDocente(codiceDocente);
+		setToken(token);
 	}
 	
 	public String getCodDocente() {                                   // CODICE STUDENTE = primi 3 caratteri nome + ultimi 2 caratteri cognome + primi due caratteri email.
@@ -161,12 +167,6 @@ public class Utente {
 	}
 	
 
-	@Override
-	public String toString() {
-		return "Utente [id=" + id + ", ruolo=" + ruolo + ", nome=" + nome + ", cognome=" + cognome + ", mail=" + mail
-				+ ", password_utente=" + password_utente + ", abilitato=" + "]";
-	}
-
 	public String getCodiceDocente() {
 		return codiceDocente;
 	}
@@ -174,6 +174,24 @@ public class Utente {
 	public void setCodiceDocente(String codiceDocente) {
 		this.codiceDocente = codiceDocente;
 	}
+	
+	
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	@Override
+	public String toString() {
+		return "Utente [id=" + id + ", ruolo=" + ruolo + ", nome=" + nome + ", cognome=" + cognome + ", mail=" + mail
+				+ ", password_utente=" + password_utente + ", codiceDocente="
+				+ codiceDocente + "]";
+	}
+	
 	
 	
 	

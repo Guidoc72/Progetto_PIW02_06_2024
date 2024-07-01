@@ -1,5 +1,6 @@
 package com.example.service;
 
+import org.hibernate.internal.build.AllowSysOut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,10 +26,7 @@ public class UtenteService {
         return utenteRepository.findByMail(mail);
     }
 
-    // Metodo per salvare un nuovo utente o aggiornare un utente esistente
-    public Utente saveUtente(Utente utente) {
-        return utenteRepository.save(utente);
-    }
+  
 
     // Metodo per recuperare tutti gli utenti presenti nel database
     public List<Utente> getAllUtenti() {
@@ -49,5 +47,16 @@ public class UtenteService {
         utenteRepository.save(utente);
     }
     
-
+    public void salvaUtenteRegistrazione(Utente utente) {
+    	
+    	if(utente != null) {
+    		if(utente.getCodDocente()!= null) {
+    	if(utente.getCodiceDocente().equals("1234")) {
+    		utente.setRuolo(1L);
+    }
+    		}
+         utenteRepository.salvaUtente(utente.getRuolo(), utente.getNome(), utente.getCognome(), utente.getMail(), utente.getPassword_utente());
+    	}
+    	
+    }
 }
