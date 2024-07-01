@@ -144,6 +144,7 @@ public class StudenteController {
 	
 	@PostMapping("/password_dimenticata")
     public  String processazioneRecuperoPassword(@RequestParam("mail") String mail) throws MessagingException {
+		
 		 
 
         if (utenteRepository.existsByMail(mail) == true) {
@@ -311,7 +312,7 @@ public class StudenteController {
 		
 		
 		
-		return "registrazione.html";
+		return "login.html";
 		
 	}
 	@GetMapping("/login.html")

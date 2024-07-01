@@ -2,6 +2,9 @@ package com.example.controller;
 
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.model.Domanda_Risposta;
 import com.example.model.Linguaggio;
+import com.example.model.UserDetailsImpl;
+import com.example.model.Utente;
+import com.example.repository.RuoloRepository;
+import com.example.repository.UtenteRepository;
 import com.example.service.DomandaRispostaService;
 import com.example.service.LinguaggioService;
 
@@ -25,10 +32,36 @@ public class InserimentoDomandaController {
 	@Autowired
 	private DomandaRispostaService domandaRispostaService;
 	
+	@Autowired
+	UtenteRepository utenteRepository;
+	
+	@Autowired
+	RuoloRepository ruoloRepository;
+	
 
 	// Mostra il form di registrazione
     @GetMapping("/inserimentoDomanda")
     public String mostraFormInserimentoDomande(Model model) {
+    	String mail = null;								/////////////////////////////////// INIZIO
+		String ruolo = null;
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		boolean connesso = true;
+		 if (authentication != null && authentication.isAuthenticated()) {							
+			    Object principal = authentication.getPrincipal();
+			    if (principal.equals("anonymousUser")) {	
+			    	connesso = false;													/// METODO PER NAVBAR
+			  } 	
+			    if (principal instanceof UserDetails) {
+				      UserDetails user = (UserDetails) principal;
+				      UserDetailsImpl user2 = (UserDetailsImpl) user;
+				       mail = user2.getUsername(); 
+				       Utente utente = utenteRepository.findBymail(mail);
+				       ruolo = ruoloRepository.findByid(utente.getRuolo());
+				    } 
+		 }
+		
+	model.addAttribute("connesso",connesso);
+	model.addAttribute("ruolo",ruolo);					//////////////////////////////////// FINE
     	
     	
         model.addAttribute("formDomande", new Domanda_Risposta());

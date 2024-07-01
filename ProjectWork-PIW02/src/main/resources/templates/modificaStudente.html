@@ -50,8 +50,10 @@
     </style>
 </head>
 <body>
+		<header th:insert="~{fragments/navbar.html :: menu_fragment}"></header>
 
 <div class="container modificaStudente">
+
     <form th:action="@{/modificaStudente}" method="post" th:object="${Studenti}">
         <div class="card">
             <div class="card-body">

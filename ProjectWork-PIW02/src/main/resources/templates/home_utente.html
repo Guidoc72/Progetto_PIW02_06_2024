@@ -21,6 +21,8 @@
 
 </head>
 <body>
+		<header th:insert="~{fragments/navbar.html :: menu_fragment}"></header>
+
 <h2 th:text="'Ciao ' + ${nomeUtente} + ','"></h2>
 
 <div class="container mt-5">
