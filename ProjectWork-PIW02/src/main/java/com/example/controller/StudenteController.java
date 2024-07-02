@@ -318,7 +318,7 @@ public class StudenteController {
 		
 		
 		
-		return "login.html";
+		return "registrazione-successo.html";
 		
 	}
 	@GetMapping("/login.html")
