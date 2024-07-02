@@ -46,6 +46,7 @@ import com.example.service.UtenteService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.Session;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 
@@ -529,7 +530,7 @@ public class StudenteController {
     }
     
     @GetMapping("/goToHomepage")
-    public String goToHomepage(Model model) {
+    public String goToHomepage(Model model, HttpSession session) {
     	String mail = null;								/////////////////////////////////// INIZIO
 		String ruolo = null;
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -547,13 +548,16 @@ public class StudenteController {
 				       ruolo = ruoloRepository.findByid(utente.getRuolo());
 				    } 
 		 }
-		
+		 
+	Object nomeUtente = session.getAttribute("nomeUtente");
+	model.addAttribute("nomeUtente", nomeUtente);
 	model.addAttribute("connesso",connesso);
 	model.addAttribute("ruolo",ruolo);					//////////////////////////////////// FINE
 		
         return "home";
     }
 
+	
 	
 	
 }
