@@ -12,7 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 	
 	
-	@Bean
+@Bean
 SecurityFilterChain chain(HttpSecurity http) throws Exception {
 		
 		http
@@ -21,13 +21,15 @@ SecurityFilterChain chain(HttpSecurity http) throws Exception {
 		.authorizeHttpRequests()
 
 //		.requestMatchers(HttpMethod.POST).hasAuthority("Studente") // cambiarlo in plurale
-		.requestMatchers("/home_utente.html","/visualizzazione_quiz.html","risultato_quiz.html").hasAuthority("Studente")
+		.requestMatchers("/home_utente","/visualizzazione_quiz","/risultato_quiz").hasAuthority("Studente")
+
 		.requestMatchers("/landingPageDocente","/creaQuiz","/inserimentoDomanda","/inserimentoLinguaggio","/modificaStudente","/assegnazioneQuizStudente").hasAuthority("Docente")
+
 		.anyRequest().permitAll()
 		
 		.and()
 		.formLogin()
-        .loginPage("/login.html") // URL della tua pagina di login personalizzata
+        .loginPage("/login") // URL della tua pagina di login personalizzata
         .usernameParameter("mail") // Nome del campo email nel form
         .passwordParameter("password") // Nome del campo password nel form
         

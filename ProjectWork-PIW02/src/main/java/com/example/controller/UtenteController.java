@@ -70,7 +70,7 @@ public class UtenteController {
 //            @RequestParam("ruolo") Long ruolo,
             Model model) {
 
-    	System.out.println("DATI PROVENTINTI DAL GETMAPPING -> " + Studenti.getId() + Studenti.getNome() + Studenti.getCognome() + Studenti.getMail() + Studenti.getRuolo());
+//    	System.out.println("DATI PROVENTINTI DAL GETMAPPING -> " + Studenti.getId() + Studenti.getNome() + Studenti.getCognome() + Studenti.getMail() + Studenti.getRuolo());
     	
     	System.out.println("-------- SONO NEL POST MAPPING ---------");
 //    	

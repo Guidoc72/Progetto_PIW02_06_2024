@@ -27,40 +27,20 @@
 	    <!-- Sezione per visualizzare i messaggi di errore -->
 	    <div th:if="${errorMessages}" style="color: red;">
 	        <ul>
-	            <li th:each="errorMessage : ${errorMessages}" th:text="${errorMessage}"></li>
+	            <li class="no-bullets" th:each="errorMessage : ${errorMessages}" th:text="${errorMessage}"></li>
 	        </ul>
 	    </div>
 	
 	    <!-- Sezione per visualizzare i messaggi di successo -->
 	    <div th:if="${successMessages}" style="color: green;">
 	        <ul>
-	            <li th:each="successMessage : ${successMessages}" th:text="${successMessage}"></li>
+	            <li class="no-bullets" th:each="successMessage : ${successMessages}" th:text="${successMessage}"></li>
 	        </ul>
 	    </div>
 		<!-- <br><br> -->
         <select id="utenti" name="utenteIdList">
             <option th:each="utente : ${utenti}" th:value="${utente.id}" th:text="${utente.nome} + ' ' + ${utente.cognome} + ' ' + ${utente.mail}"></option>
         </select>
-<!--         <table border="1"> -->
-<!--             <thead> -->
-<!--                 <tr> -->
-<!--                     <th>Nome</th> -->
-<!--                     <th>Cognome</th> -->
-<!--                     <th>Email</th> -->
-<!--                     <th>Seleziona</th> -->
-<!--                 </tr> -->
-<!--             </thead> -->
-<!--             <tbody> -->
-<!--                 <tr th:each="utente : ${utenti}"> -->
-<!--                     <td th:text="${utente.nome}"></td> -->
-<!--                     <td th:text="${utente.cognome}"></td> -->
-<!--                     <td th:text="${utente.mail}"></td> -->
-<!--                     <td> -->
-<!--                         <input type="checkbox" name="utenteIdList" th:value="${utente.id}"> -->
-<!--                     </td> -->
-<!--                 </tr> -->
-<!--             </tbody> -->
-<!--         </table> -->
         <br>
         <button type="submit">Assegna</button>
     </form>

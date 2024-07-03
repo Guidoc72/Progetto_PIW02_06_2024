@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -45,6 +46,8 @@ import com.example.service.UtenteService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.Session;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
 
 @Controller
@@ -82,7 +85,7 @@ public class StudenteController {
 	
 
 	
-	@GetMapping(path = {"/", "/home.html"})
+	@GetMapping(path = {"/", "/home"})
 	public String getProfile(Model model) {
        
 		String mail = null;								/////////////////////////////////// INIZIO
@@ -138,7 +141,7 @@ public class StudenteController {
 	model.addAttribute("connesso",connesso);
 	model.addAttribute("ruolo",ruolo);					//////////////////////////////////// FINE
 		
-		return "recupera_password.html";
+		return "recupera_password";
 		
 	}
 	
@@ -196,7 +199,7 @@ public class StudenteController {
 		 
 		 
 	       model.addAttribute("token",token); 
-		 return"reset-password.html";
+		 return"reset-password";
 	    }
 	 
 	 
@@ -237,7 +240,7 @@ public class StudenteController {
 	    
 	
 	
-	@GetMapping("/registrazione.html")
+	@GetMapping("/registrazione")
 	public String getRegistrazione(Model model ) {
 		String mail = null;								/////////////////////////////////// INIZIO
 		String ruolo = null;
@@ -282,8 +285,12 @@ public class StudenteController {
 		
 	}
 	@PostMapping("/registrazioneUtente")
-	public String getRegistrazioneCompletata(@ModelAttribute("utente") Utente utente,Model model,@RequestParam String password2) {
+	public String getRegistrazioneCompletata(@Valid @ModelAttribute("utente") Utente utente, BindingResult bindingResult, Model model, @RequestParam String password2) {
 		
+		 // Verifica gli errori di validazione
+	    if (bindingResult.hasErrors()) {
+	        return "registrazione";
+	    }
 	
 		
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -310,14 +317,14 @@ public class StudenteController {
 		
 			
 		}
+				
 		
-		
-		
-		return "login.html";
+		return "registrazione-successo";
 		
 	}
-	@GetMapping("/login.html")
-	public String getLogin(Model model) {
+	
+	@GetMapping("registrazione-successo")
+	public String getSuccessReg(Model model) {
 		String mail = null;								/////////////////////////////////// INIZIO
 		String ruolo = null;
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -340,24 +347,51 @@ public class StudenteController {
 	model.addAttribute("ruolo",ruolo);					//////////////////////////////////// FINE
 		
 		
-		 
-
-		 if (authentication != null && authentication.isAuthenticated()) {
-			    // Utente autenticato
-			    Object principal = authentication.getPrincipal();
-			    													//----> METODO PER ESTRAPOLARE L'EMAIL DELL'UTENTE COLLEGATO
-			    if (!principal.equals("anonymousUser")) {
-			     
-			    	return "home";
-			  } 	
-		 }
-		
-		
-		return "login";
-		
+		return "registrazione-successo.html";
 	}
 	
-	@GetMapping("/home_utente.html")
+	
+	
+	@GetMapping("/login")
+	public String getLogin(Model model, @RequestParam(name = "error", required = false) String error) {
+	    String mail = null;
+	    String ruolo = null;
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    boolean connesso = true;
+	    if (authentication != null && authentication.isAuthenticated()) {
+	        Object principal = authentication.getPrincipal();
+	        if (principal.equals("anonymousUser")) {
+	            connesso = false; // METODO PER NAVBAR
+	        }
+	        if (principal instanceof UserDetails) {
+	            UserDetails user = (UserDetails) principal;
+	            UserDetailsImpl user2 = (UserDetailsImpl) user;
+	            mail = user2.getUsername();
+	            Utente utente = utenteRepository.findBymail(mail);
+	            ruolo = ruoloRepository.findByid(utente.getRuolo());
+	        }
+	    }
+
+	    model.addAttribute("connesso", connesso);
+	    model.addAttribute("ruolo", ruolo);
+
+	    if (error != null) {
+	        model.addAttribute("error", "Email e/o password errata");
+	    }
+
+	    if (authentication != null && authentication.isAuthenticated()) {
+	        // Utente autenticato
+	        Object principal = authentication.getPrincipal();
+	        // METODO PER ESTRAPOLARE L'EMAIL DELL'UTENTE COLLEGATO
+	        if (!principal.equals("anonymousUser")) {
+	            return "home";
+	        }
+	    }
+
+	    return "login";
+	}
+	
+	@GetMapping("/home_utente")
 	public String getHomeUtente(Model model) {
 		String mail = null;								/////////////////////////////////// INIZIO
 		String ruolo = null;
@@ -431,7 +465,7 @@ public class StudenteController {
 	
 	
 	
-	@PostMapping( "/visualizzazione_quiz.html")
+	@PostMapping( "/visualizzazione_quiz")
 	public String getQuiz(@ModelAttribute("quiz") Quiz quiz,Model model) {
 		
 	
@@ -529,6 +563,7 @@ public class StudenteController {
     public String goToHomepage(Model model) {
     	String mail = null;								/////////////////////////////////// INIZIO
 		String ruolo = null;
+		String nomeUtente = null;
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		boolean connesso = true;
 		 if (authentication != null && authentication.isAuthenticated()) {							
@@ -542,15 +577,18 @@ public class StudenteController {
 				       mail = user2.getUsername(); 
 				       Utente utente = utenteRepository.findBymail(mail);
 				       ruolo = ruoloRepository.findByid(utente.getRuolo());
+				       nomeUtente = utente.getNome();
 				    } 
 		 }
 		
 	model.addAttribute("connesso",connesso);
 	model.addAttribute("ruolo",ruolo);					//////////////////////////////////// FINE
+	model.addAttribute("nomeUtente",nomeUtente);					//////////////////////////////////// FINE
 		
-        return "home";
+	        return "home";
     }
 
+	
 	
 	
 }

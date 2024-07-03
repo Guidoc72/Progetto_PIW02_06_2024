@@ -65,8 +65,9 @@ public class QuizController {
 				    } 
 		 }
 		
-	model.addAttribute("connesso",connesso);
-	model.addAttribute("ruolo",ruolo);					//////////////////////////////////// FINE
+		model.addAttribute("connesso",connesso);
+		model.addAttribute("ruolo",ruolo);					//////////////////////////////////// FINE
+		
 		model.addAttribute("quizzes", quizService.getAllQuizzes());
 		model.addAttribute("utenti", utenteService.getAllUtenti());
 		
@@ -100,11 +101,14 @@ public class QuizController {
             	
             	Utente utente = utenteService.findUtenteById(utenteId);
             	Optional<Quiz> quiz = quizService.getQuizById(quizId);
-            	            	
-            	Optional<Linguaggio> linguaggio = linguaggioService.getLinguaggioById(quiz.get().getId());
-       		 	String nomeLinguaggio= linguaggio.get().getNomeArgomento();
-            	            	            	
-            	successMessages.add(utente.getNome() + " " + utente.getCognome() + " " + utente.getMail() + " assegnato a " + nomeLinguaggio + " QUIZ " + quiz.get().getId());
+            	
+            	Optional<Linguaggio> linguaggio = linguaggioService.getLinguaggioById(quiz.get().getId_linguaggio());
+            	
+            	String nomeLinguaggio = linguaggio.get().getNomeArgomento();
+            	
+            	System.out.println("sono nel controller | LINGUAGGIO QUIZ -> " + nomeLinguaggio);
+
+            	successMessages.add(utente.getNome() + " " + utente.getCognome() + " <" + utente.getMail() + "> assegnato a " + nomeLinguaggio + " QUIZ " + quiz.get().getId());
             	
             }
         }
