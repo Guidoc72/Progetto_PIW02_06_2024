@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -45,6 +46,8 @@ import com.example.service.UtenteService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.Session;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
 
 @Controller
@@ -281,8 +284,12 @@ public class StudenteController {
 		
 	}
 	@PostMapping("/registrazioneUtente")
-	public String getRegistrazioneCompletata(@ModelAttribute("utente") Utente utente,Model model,@RequestParam String password2) {
+	public String getRegistrazioneCompletata(@Valid @ModelAttribute("utente") Utente utente, BindingResult bindingResult, Model model, @RequestParam String password2) {
 		
+		 // Verifica gli errori di validazione
+	    if (bindingResult.hasErrors()) {
+	        return "registrazione";
+	    }
 	
 		
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -309,12 +316,12 @@ public class StudenteController {
 		
 			
 		}
-		
-		
+				
 		
 		return "login";
 		
 	}
+	
 	@GetMapping("/login")
 	public String getLogin(Model model) {
 		String mail = null;								/////////////////////////////////// INIZIO
@@ -338,22 +345,49 @@ public class StudenteController {
 	model.addAttribute("connesso",connesso);
 	model.addAttribute("ruolo",ruolo);					//////////////////////////////////// FINE
 		
-		
-		 
 
-		 if (authentication != null && authentication.isAuthenticated()) {
-			    // Utente autenticato
-			    Object principal = authentication.getPrincipal();
-			    													//----> METODO PER ESTRAPOLARE L'EMAIL DELL'UTENTE COLLEGATO
-			    if (!principal.equals("anonymousUser")) {
-			     
-			    	return "home";
-			  } 	
-		 }
+		return "registrazione-successo.html";
 		
-		
-		return "login";
-		
+	}
+	
+	
+	@GetMapping("/login.html")
+	public String getLogin(Model model, @RequestParam(name = "error", required = false) String error) {
+	    String mail = null;
+	    String ruolo = null;
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    boolean connesso = true;
+	    if (authentication != null && authentication.isAuthenticated()) {
+	        Object principal = authentication.getPrincipal();
+	        if (principal.equals("anonymousUser")) {
+	            connesso = false; // METODO PER NAVBAR
+	        }
+	        if (principal instanceof UserDetails) {
+	            UserDetails user = (UserDetails) principal;
+	            UserDetailsImpl user2 = (UserDetailsImpl) user;
+	            mail = user2.getUsername();
+	            Utente utente = utenteRepository.findBymail(mail);
+	            ruolo = ruoloRepository.findByid(utente.getRuolo());
+	        }
+	    }
+
+	    model.addAttribute("connesso", connesso);
+	    model.addAttribute("ruolo", ruolo);
+
+	    if (error != null) {
+	        model.addAttribute("error", "Email e/o password errata");
+	    }
+
+	    if (authentication != null && authentication.isAuthenticated()) {
+	        // Utente autenticato
+	        Object principal = authentication.getPrincipal();
+	        // METODO PER ESTRAPOLARE L'EMAIL DELL'UTENTE COLLEGATO
+	        if (!principal.equals("anonymousUser")) {
+	            return "home";
+	        }
+	    }
+
+	    return "login";
 	}
 	
 	@GetMapping("/home_utente")
@@ -525,7 +559,7 @@ public class StudenteController {
     }
     
     @GetMapping("/goToHomepage")
-    public String goToHomepage(Model model) {
+    public String goToHomepage(Model model, HttpSession session) {
     	String mail = null;								/////////////////////////////////// INIZIO
 		String ruolo = null;
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -543,13 +577,16 @@ public class StudenteController {
 				       ruolo = ruoloRepository.findByid(utente.getRuolo());
 				    } 
 		 }
-		
+		 
+	Object nomeUtente = session.getAttribute("nomeUtente");
+	model.addAttribute("nomeUtente", nomeUtente);
 	model.addAttribute("connesso",connesso);
 	model.addAttribute("ruolo",ruolo);					//////////////////////////////////// FINE
 		
         return "home";
     }
 
+	
 	
 	
 }

@@ -1,22 +1,51 @@
 <!DOCTYPE html>
-<html 	lang="it"
-		xmlns="http://www.thymeleaf.org">
+<html lang="it" xmlns="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
-	<link rel="stylesheet" th:href=@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css}>
-
+<link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css}">
 <title>Home</title>
+<style>
+  body, html {
+    height: 100%;
+  }
+  .center-content {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .welcome-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* Centrare il contenuto */
+    text-align: center; /* Testo centrato */
+    margin-bottom: 70px; /* Spazio dal basso aumentato */
+  }
+  
+  .welcome-section img {
+    width: 40px; /* Dimensione dell'immagine aumentata */
+    height: auto;
+  }
+
+  .welcome-section h1, .welcome-section h2 {
+    font-size: 3em; /* Dimensione del titolo aumentata */
+    color: #234567; /* Colore del titolo cambiato */
+    margin: 0; /* Margine superiore e inferiore a zero */
+    padding: 20px; /* Padding per migliorare la leggibilità */
+    border-radius: 10px; /* Bordo arrotondato */
+  }
+</style>
 </head>
 <body>
-		<header th:insert="~{fragments/navbar.html :: menu_fragment}"></header>
-		
-		
-<h1 th:if="${nomeUtente == null}">Benvenuti nella Home Page</h1>
-<h2 th:text="'Ciao ' + ${nomeUtente} " th:if="${nomeUtente != null}"></h2>
-
-
-
-
-
+    <header th:insert="~{fragments/navbar.html :: menu_fragment}"></header>
+    
+    <div class="center-content">
+        <div class="welcome-section">
+            <h1 th:if="${nomeUtente == null}">Benvenuti nella Home Page</h1>
+            <h2 th:utext="'Ciao ' + ${nomeUtente} + ' <img src=\'https://images.emojiterra.com/google/android-nougat/512px/1f44b.png\' alt=\'Welcome Image\'>'" th:if="${nomeUtente != null}"></h2>
+        </div>
+    </div>
 </body>
 </html>
