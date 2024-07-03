@@ -300,8 +300,12 @@ public class StudenteController {
 		if(utente!=null) {
 			
 		
-			if(utenteRepository.existsByMail(utente.getMail()) == false) {
-				
+			if (utenteRepository.existsByMail(utente.getMail())) {
+	            // Email già registrata
+	            model.addAttribute("emailEsistente", true);
+	            return "registrazione";
+	        } else {
+	            // Procedi con la registrazione
 				if(utente.getPassword_utente().equals(password2)) {
 				
 				utente.setPassword_utente(encoder.encode(utente.getPassword_utente()));
@@ -311,7 +315,7 @@ public class StudenteController {
 					System.out.println("Password inserite sono diverse");
 				}
 				
-			}else {
+			} {
 				System.out.println("Email gia registrata");
 				}
 		
