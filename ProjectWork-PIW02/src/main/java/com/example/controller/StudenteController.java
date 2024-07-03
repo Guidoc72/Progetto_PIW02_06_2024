@@ -351,7 +351,7 @@ public class StudenteController {
 	model.addAttribute("ruolo",ruolo);					//////////////////////////////////// FINE
 		
 		
-		return "registrazione-successo.html";
+		return "registrazione-successo";
 	}
 	
 	
