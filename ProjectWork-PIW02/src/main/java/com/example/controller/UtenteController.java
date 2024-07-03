@@ -25,7 +25,9 @@ public class UtenteController {
 	
     @Autowired
     private UtenteService utenteService;
+    
 
+    
     // richiesta GET a "/modificaStudente"
     @GetMapping("/modificaStudente")
     public String getAllUtenti(Model model) {
@@ -46,11 +48,12 @@ public class UtenteController {
 				       ruolo = ruoloRepository.findByid(utente.getRuolo());
 				    } 
 		 }
+		 Utente studenti = new Utente();
 		
 	model.addAttribute("connesso",connesso);
 	model.addAttribute("ruolo",ruolo);					//////////////////////////////////// FINE
         // Aggiunge un nuovo oggetto Utente al modello per il form di inserimento/modifica
-        model.addAttribute("Studenti", new Utente());
+        model.addAttribute("Studenti", studenti);
         // Recupera tutti gli utenti dal servizio e li aggiunge al modello per la visualizzazione
         model.addAttribute("Utente", utenteService.getAllUtenti());
         // Ritorna il nome della vista da visualizzare (modificaStudente.html in questo caso)
@@ -59,20 +62,20 @@ public class UtenteController {
 
     //  richiesta POST a "/modificaStudente" per aggiornare un utente
     @PostMapping("/modificaStudente")
-    public String updateUtente(
-            @RequestParam("id") Long id,
-            @RequestParam("nome") String nome,
-            @RequestParam("cognome") String cognome,
-            @RequestParam("mail") String mail,
-            @RequestParam("ruolo") Long ruolo,
+    public String updateUtente(@ModelAttribute("Studenti") Utente Studenti,
+//            @RequestParam("id") Long id,
+//            @RequestParam("nome") String nome,
+//            @RequestParam("cognome") String cognome,
+//            @RequestParam("mail") String mail,
+//            @RequestParam("ruolo") Long ruolo,
             Model model) {
 
-    	System.out.println("DATI PROVENTINTI DAL GETMAPPING -> " + id + nome + cognome + mail + ruolo);
+    	System.out.println("DATI PROVENTINTI DAL GETMAPPING -> " + Studenti.getId() + Studenti.getNome() + Studenti.getCognome() + Studenti.getMail() + Studenti.getRuolo());
     	
     	System.out.println("-------- SONO NEL POST MAPPING ---------");
-    	
-        // Verifica che i parametri non siano vuoti prima di procedere
-        if (nome.isEmpty() || cognome.isEmpty() || mail.isEmpty()) {
+//    	
+//        // Verifica che i parametri non siano vuoti prima di procedere
+        if (Studenti.getNome().isEmpty() || Studenti.getCognome().isEmpty() || Studenti.getMail().isEmpty()) {
         	
         	System.out.println("------- CONTROLLO SE I CAMPI SONO VUOTI ---------");
         	
@@ -87,24 +90,27 @@ public class UtenteController {
 
         System.err.println("------ SONO FUORI IL TRY / CATCH -------");
         // Chiamata al servizio per aggiornare l'utente nel database
+        System.out.println(Studenti);
+
         try {
         	System.out.println("------- TRY -> PROVO AD AGGIORNARE I DATI -------");
-            utenteService.updateUtente(id, nome, cognome, mail, ruolo);
+            utenteRepository.updateUtente(Studenti.getId(), Studenti.getNome(), Studenti.getCognome(), Studenti.getMail(), Studenti.getRuolo());
             // Se l'aggiornamento va a buon fine, reindirizza alla pagina principale per il docente
             
             // Stampa dati utente aggiornati
-            System.out.println("UTENTE AGGIORNATO CON SUCCESSO: \n" + "[ id: " + id + " ]" + "[ nome: " + nome + " ]" + "[ cognome: " + cognome + " ]" + "[ mail: " + mail + "]" + "[ ruolo: " + ruolo + "]");
-            
+//            System.out.println("UTENTE AGGIORNATO CON SUCCESSO: \n" + "[ id: " + id + " ]" + "[ nome: " + nome + " ]" + "[ cognome: " + cognome + " ]" + "[ mail: " + mail + "]" + "[ ruolo: " + ruolo + "]");
+            System.out.println("REGISTRAZIONE AVVENUTA CON SUCECSSO");
             return "redirect:/landingPageDocente";
         } catch (Exception e) {
         	
         	System.out.println("------ CATCH -> SONO NEL CATCH: ERRORE");
-        	
-            // Se si verifica un'eccezione durante l'aggiornamento, gestisce l'errore
+//        	
+//            // Se si verifica un'eccezione durante l'aggiornamento, gestisce l'errore
             model.addAttribute("error", "Si è verificato un errore durante l'aggiornamento dell'utente.");
             // Ritorna alla pagina di modifica con un messaggio di errore
             return "modificaStudente";
         }
+    	
     }
 }
     

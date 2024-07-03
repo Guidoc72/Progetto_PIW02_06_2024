@@ -65,9 +65,11 @@ public class QuizService {
         for (Quiz quiz : quizzes) {
         	// recupera l'id_linguaggio di quiz tramite il findbyId dell'oggetto linguaggio
             Linguaggio linguaggio = linguaggioRepository.findById(quiz.getId_linguaggio()).orElse(null);
+            System.out.println("sono nel service | LINGUAGGIO -> " + linguaggio);
             // se il linguaggio diverso da null -> trova il nome corrispondente
             if (linguaggio != null) {
                 quiz.setNomeLinguaggio(linguaggio.getNomeArgomento());
+                System.out.println("sono nel service | SONO NEL if > for > getAllQuiz() | NOME LINGUAGGIO -> " + linguaggio.getNomeArgomento());
             }
         }
         return quizzes;

@@ -27,13 +27,13 @@ public class GlobalExceptionHandlerController {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String handleMyException(MyException ex, Model model) {
         model.addAttribute("errorMessage", ex.getMessage());
-        return "/errori.html"; // Restituisci la vista della pagina di errore
+        return "/errori"; // Restituisci la vista della pagina di errore
     }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String handleGenericException(Exception ex, Model model) {
         model.addAttribute("errorMessage", "Si è verificato un errore. Per favore riprova più tardi.");
-        return "/errori.html";
+        return "/errori";
     }
 }

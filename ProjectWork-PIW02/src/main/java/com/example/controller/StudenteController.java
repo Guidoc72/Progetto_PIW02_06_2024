@@ -81,7 +81,7 @@ public class StudenteController {
 	
 
 	
-	@GetMapping(path = {"/", "/home.html"})
+	@GetMapping(path = {"/", "/home"})
 	public String getProfile(Model model) {
        
 		String mail = null;								/////////////////////////////////// INIZIO
@@ -137,7 +137,7 @@ public class StudenteController {
 	model.addAttribute("connesso",connesso);
 	model.addAttribute("ruolo",ruolo);					//////////////////////////////////// FINE
 		
-		return "recupera_password.html";
+		return "recupera_password";
 		
 	}
 	
@@ -195,7 +195,7 @@ public class StudenteController {
 		 
 		 
 	       model.addAttribute("token",token); 
-		 return"reset-password.html";
+		 return"reset-password";
 	    }
 	 
 	 
@@ -236,7 +236,7 @@ public class StudenteController {
 	    
 	
 	
-	@GetMapping("/registrazione.html")
+	@GetMapping("/registrazione")
 	public String getRegistrazione(Model model ) {
 		String mail = null;								/////////////////////////////////// INIZIO
 		String ruolo = null;
@@ -312,10 +312,10 @@ public class StudenteController {
 		
 		
 		
-		return "login.html";
+		return "login";
 		
 	}
-	@GetMapping("/login.html")
+	@GetMapping("/login")
 	public String getLogin(Model model) {
 		String mail = null;								/////////////////////////////////// INIZIO
 		String ruolo = null;
@@ -356,7 +356,7 @@ public class StudenteController {
 		
 	}
 	
-	@GetMapping("/home_utente.html")
+	@GetMapping("/home_utente")
 	public String getHomeUtente(Model model) {
 		String mail = null;								/////////////////////////////////// INIZIO
 		String ruolo = null;
@@ -430,7 +430,7 @@ public class StudenteController {
 	
 	
 	
-	@PostMapping( "/visualizzazione_quiz.html")
+	@PostMapping( "/visualizzazione_quiz")
 	public String getQuiz(@ModelAttribute("quiz") Quiz quiz,Model model) {
 		
 	

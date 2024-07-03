@@ -12,7 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 	
 	
-	@Bean
+@Bean
 SecurityFilterChain chain(HttpSecurity http) throws Exception {
 		
 		http
