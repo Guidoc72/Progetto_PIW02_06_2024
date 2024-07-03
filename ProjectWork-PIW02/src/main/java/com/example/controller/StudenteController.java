@@ -6,6 +6,7 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
+import java.util.regex.Pattern;
 
 import org.thymeleaf.ITemplateEngine;
 
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
@@ -77,6 +79,8 @@ public class StudenteController {
 	@Autowired
 	RuoloRepository ruoloRepository;
 	
+	@Autowired
+	private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[~!@#$%^&*()_-]+).{8,}$");
 
 	
 
@@ -147,7 +151,29 @@ public class StudenteController {
 	
 	
 	@PostMapping("/password_dimenticata")
-    public  String processazioneRecuperoPassword(@RequestParam("mail") String mail) throws MessagingException {
+    public  String processazioneRecuperoPassword(@RequestParam("mail") String mail, Model model) throws MessagingException {
+								/////////////////////////////////// INIZIO
+		String ruolo = null;
+		String nomeUtente = null;
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		boolean connesso = true;
+		 if (authentication != null && authentication.isAuthenticated()) {							
+			    Object principal = authentication.getPrincipal();
+			    if (principal.equals("anonymousUser")) {	
+			    	connesso = false;													/// METODO PER NAVBAR
+			  } 	
+			    if (principal instanceof UserDetails) {
+				      UserDetails user = (UserDetails) principal;
+				      UserDetailsImpl user2 = (UserDetailsImpl) user;
+				       mail = user2.getUsername(); 
+				       Utente utente = utenteRepository.findBymail(mail);
+				       ruolo = ruoloRepository.findByid(utente.getRuolo());
+				       nomeUtente = utente.getNome();
+				    } 
+		 }
+		
+	model.addAttribute("connesso",connesso);
+	model.addAttribute("ruolo",ruolo);					//////////////////////////////////// FINE
 		
 		 
 
@@ -162,12 +188,15 @@ public class StudenteController {
     	    
    	  emailService.sendEmail(mail, "Recupero Password", "Per recuperare la password vai a questo link"+" http://localhost:8080/reset-password/"+token);  //invio email
     	    
-   	 
+   	model.addAttribute("successMessage", "Email Inviata Con Successo");
+
             
             System.out.println("email inviata con succeso");
             return "/recupera_password";
         } else {
-        	System.out.println("email non trovata");
+        	
+        	model.addAttribute("errorMessage", "Email non trovata.");
+        	System.out.println("Email Non Trovata");
             return "/recupera_password";
         }
     }
@@ -207,10 +236,21 @@ public class StudenteController {
 	 @PostMapping("/reset-password")
 	    public String updatePassword(@RequestParam("token") String token,
 	                                      @RequestParam("password") String password,
-	                                      @RequestParam("password2") String password2) {
+	                                      @RequestParam("password2") String password2,Model model) {
 	    	
 	    	BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 	    	if(password.equals(password2)) {
+	    		
+	    		if(!PASSWORD_PATTERN.matcher(password).matches()) {
+	    			
+		        	model.addAttribute("errorMessage", "Usa una Password piu sicura");
+		        	
+
+	    			System.out.println("La password non rispetta i canoni di sicurezza");
+	    			
+
+	    			return "redirect:/reset-password/" + token;
+	    		}
 	    		
 	    		Utente utente = utenteRepository.findBytoken(token);
 	    		
@@ -223,13 +263,19 @@ public class StudenteController {
 	        	    random.nextBytes(bytes);											
 	        	     token = Base64.getUrlEncoder().encodeToString(bytes);			//Cambio token nel db non resetto per eventuali problemi di security
 	        	    utenteRepository.updateTokenbymail(token, utente.getMail());
+		        	model.addAttribute("successMessage", "Password Reimpostata Con Successo");
+
 	    			System.out.println("Password resettata con successo"); 
 	    		}
 	    		
 	    	
 	    		
 	    	}else {
+	        	model.addAttribute("errorMessage", "Le Password Inserite Sono Diverse");
+
 	    		System.out.println("Le password non coincidono");
+
+    			return "redirect:/reset-password/" + token;
 	    	}
 	        
 
