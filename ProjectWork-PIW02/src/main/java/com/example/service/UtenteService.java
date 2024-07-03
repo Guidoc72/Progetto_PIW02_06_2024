@@ -26,7 +26,9 @@ public class UtenteService {
         return utenteRepository.findByMail(mail);
     }
 
-  
+    public boolean existsByMail(String mail) {
+        return utenteRepository.existsByMail(mail);
+    }
 
     // Metodo per recuperare tutti gli utenti presenti nel database
     public List<Utente> getAllUtenti() {
