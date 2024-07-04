@@ -95,21 +95,33 @@ public class QuizService {
     
 	public Quiz createQuizWithRandomDomande(Long linguaggioId) {
 
+		System.err.println("sono nel metodo createQuizWithRandomDomande in QuizService");
+		
 		Long ultimoId = quizRepository.findMaxId().orElse(0L);
+		System.err.println("ultimo -> " + ultimoId);
 		Long nuovoId = ultimoId + 1;
+		System.err.println("nuovo id -> " + nuovoId);
 
 		// Crea un nuovo quiz associato al linguaggio
 		Quiz quiz = new Quiz();
+		System.err.println(quiz);
 		quiz.setId_linguaggio(linguaggioId);
-		quiz = quizRepository.save(quiz); // Salva e ritorna il quiz creato
+		quiz.setId(nuovoId);
+		System.err.println(quiz);
+		quiz = quizRepository.save(quiz); // Salva e ritorna il quiz creato // NON SALVA
+		System.err.println("sono in QuizService | salvato il nuovo quiz -> " + quiz);
 
 		// Aggiungi 10 domande casuali al quiz
 		assignRandomDomandeToQuiz(quiz.getId(), linguaggioId);
+		
 
 		return quiz;
 	}
 
 	public void assignRandomDomandeToQuiz(Long quizId, Long linguaggioId) {
+		
+		System.err.println("sono nel metodo assignRandomDomandeToQuiz in QuizService");
+		
 		// Recupera tutte le domande risposta dal repository
 		List<Domanda_Risposta> domandeRisposta = domandaRispostaRepository.findRandomDomandeByLinguaggioId(linguaggioId);
 
@@ -121,6 +133,9 @@ public class QuizService {
 		// Assegna 10 domande risposta casuali al quiz
 		Random random = new Random();
 		for (int i = 0; i < 10; i++) {
+			
+			System.err.println("sono nel metodo assignRandomDomandeToQuiz in QuizService nel for");
+			
 			int randomIndex = random.nextInt(domandeRisposta.size());
 			Domanda_Risposta domandaRisposta = domandeRisposta.get(randomIndex);
 
@@ -131,6 +146,7 @@ public class QuizService {
 
 			// Salva l'associazione nel repository Quiz_DomandaRepository
 			quizDomandaRepository.aggiungiQuiz(quizId, domandaRisposta.getId());
+			System.err.println("sono in QuizService | metodo assignRandomDomandeToQuiz | quiz aggiunto");
 			 
 			// Rimuove la domanda selezionata per evitare duplicati
             domandeRisposta.remove(randomIndex);

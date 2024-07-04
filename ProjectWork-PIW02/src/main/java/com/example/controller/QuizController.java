@@ -153,14 +153,18 @@ public class QuizController {
 	
     @PostMapping("/creaQuiz")
     public String createQuizWithRandomDomande(@RequestParam("linguaggioId") Long linguaggioId) {
+    	
+    	System.err.println("entro nel POSTMAPPING");
+    	
         try {
+        	System.err.println("entro nel TRY");
             // Crea un nuovo quiz associato al linguaggio e assegna 10 domande casuali
             quizService.createQuizWithRandomDomande(linguaggioId);
+            System.err.println("QUIZ CREATO");
+            return "redirect:/landingPageDocente"; 
         } catch (IllegalArgumentException e) {
             return "redirect:/error";
         }
-
-        return "redirect:/landingPageDocente"; 
     }
 
 }

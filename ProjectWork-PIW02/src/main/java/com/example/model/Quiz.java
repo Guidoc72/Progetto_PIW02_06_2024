@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "quiz")
@@ -18,7 +19,7 @@ public class Quiz {
 	private Long id;
 	
 	@Column
-	@NotEmpty
+	@NotNull
 	private Long id_linguaggio;
 	
 	@Transient
