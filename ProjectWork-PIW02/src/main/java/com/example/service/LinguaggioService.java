@@ -38,7 +38,9 @@ public class LinguaggioService {
     public Optional<Linguaggio> getLinguaggioById(Long id) {
         return linguaggioRepository.findById(id); 
     }
-    
+    public boolean existsByNomeArgomentoIgnoreCase(String nomeArgomento) {
+        return linguaggioRepository.existsByNomeArgomentoIgnoreCase(nomeArgomento);
+    }
     
 
 	

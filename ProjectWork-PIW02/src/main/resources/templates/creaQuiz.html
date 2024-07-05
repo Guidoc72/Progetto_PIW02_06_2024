@@ -70,15 +70,19 @@
 		<header th:insert="~{fragments/navbar.html :: menu_fragment}"></header>
 
     <div class="center-container">
-        <div class="container">
-            <h2>Crea Quiz</h2>
-            <form th:action="@{/creaQuiz}" th:object="${quizForm}" method="post">
-                <label for="linguaggio">Seleziona il linguaggio:</label>
-                <select id="linguaggio" name="linguaggioId">
-                    <option th:each="linguaggio : ${linguaggi}" th:value="${linguaggio.id}" th:text="${linguaggio.nomeArgomento}"></option>
-                </select>
-                <br><br>
-                <button type="submit">Crea Quiz</button>
+    <div class="container">
+        <h2>Crea Quiz</h2>
+        <!-- Visualizzazione dei messaggi di successo ed errore -->
+        <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+        <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+        <!-- Form per la creazione del quiz -->
+        <form th:action="@{/creaQuiz}" method="post">
+            <label for="linguaggio">Seleziona il linguaggio:</label>
+            <select id="linguaggio" name="linguaggioId">
+                <option th:each="linguaggio : ${linguaggi}" th:value="${linguaggio.id}" th:text="${linguaggio.nomeArgomento}"></option>
+            </select>
+            <br><br>
+            <button type="submit">Crea Quiz</button>
             </form>
         </div>
     </div>

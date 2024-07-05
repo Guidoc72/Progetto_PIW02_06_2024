@@ -84,6 +84,9 @@ public class UtenteController {
             
             System.err.println("-------- ERRORE CAMPI VUOTI ---------");
             
+            					// Ricarica gli utenti nel modello
+            					model.addAttribute("Utente", utenteService.getAllUtenti());
+            
             // Ritorna alla pagina di modifica con il messaggio di errore
             return "modificaStudente";
         }
@@ -96,11 +99,14 @@ public class UtenteController {
         	System.out.println("------- TRY -> PROVO AD AGGIORNARE I DATI -------");
             utenteRepository.updateUtente(Studenti.getId(), Studenti.getNome(), Studenti.getCognome(), Studenti.getMail(), Studenti.getRuolo());
             // Se l'aggiornamento va a buon fine, reindirizza alla pagina principale per il docente
-            
+         // Aggiunge un messaggio di successo al modello
+            model.addAttribute("success", "Utente modificato con successo.");
             // Stampa dati utente aggiornati
+            					// Ricarica gli utenti nel modello
+            					model.addAttribute("Utente", utenteService.getAllUtenti());
 //            System.out.println("UTENTE AGGIORNATO CON SUCCESSO: \n" + "[ id: " + id + " ]" + "[ nome: " + nome + " ]" + "[ cognome: " + cognome + " ]" + "[ mail: " + mail + "]" + "[ ruolo: " + ruolo + "]");
             System.out.println("REGISTRAZIONE AVVENUTA CON SUCECSSO");
-            return "redirect:/landingPageDocente";
+            return "modificaStudente";
         } catch (Exception e) {
         	
         	System.out.println("------ CATCH -> SONO NEL CATCH: ERRORE");

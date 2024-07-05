@@ -167,7 +167,7 @@
 				<label for="password">Password:</label> <input type="password"
 					id="password" name="password" class="form-control"
 					th:field="${utente.password_utente}"
-					pattern="^(?=.[a-z])(?=.[A-Z])(?=.[0-9])(?=.[!@#$%^&()_+=-])[a-zA-Z0-9!@#$%^&()_+=-]{8,}$"
+					pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&()_+=-])[a-zA-Z0-9!@#$%^&()_+=-]{8,}$"
 					required> <span class="tooltiptext">La password deve
 					essere lunga almeno 8 caratteri, contenere almeno una lettera
 					maiuscola, un numero e un carattere speciale.</span>
@@ -208,7 +208,7 @@
 							var errorMessagePassword = document
 									.getElementById("error-message-password");
 
-							var passwordPattern = /^(?=.[a-z])(?=.[A-Z])(?=.[0-9])(?=.[!@#$%^&()_+=-])[a-zA-Z0-9!@#$%^&()_+=-]{8,}$/;
+							var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&()_+=-])[a-zA-Z0-9!@#$%^&()_+=-]{8,}$/;
 
 							if (password !== confirmPassword) {
 								event.preventDefault(); // Previene l'invio del form

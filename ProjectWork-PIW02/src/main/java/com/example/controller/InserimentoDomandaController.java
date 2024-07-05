@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.model.Domanda_Risposta;
 import com.example.model.Linguaggio;
@@ -82,8 +83,8 @@ public class InserimentoDomandaController {
             @RequestParam("risposta_due") String risposta_due,
             @RequestParam("risposta_tre") String risposta_tre,
             @RequestParam("risposta_quattro") String risposta_quattro,
-            @RequestParam("risposta_esatta") int risposta_esatta,
-            Model model) {
+            @RequestParam(name = "risposta_esatta", required = false) Integer risposta_esatta,
+            RedirectAttributes redirectAttributes) {
 
     	
         // Recupera il linguaggio selezionato dal database
@@ -91,7 +92,19 @@ public class InserimentoDomandaController {
       if (!linguaggio.isPresent()) {
           // Gestione errore se il linguaggio non esiste
           System.out.println("Linguaggio non trovato!");
-          return "errorPage"; // O un'altra pagina di errore
+          redirectAttributes.addFlashAttribute("messaggio", "Errore: Linguaggio non trovato!");
+          return "inserimentoDomanda"; // O un'altra pagina di errore
+      }
+
+      // Validazione dei campi
+      if (domanda == null || domanda.trim().isEmpty() ||
+          risposta_uno == null || risposta_uno.trim().isEmpty() ||
+          risposta_due == null || risposta_due.trim().isEmpty() ||
+          risposta_tre == null || risposta_tre.trim().isEmpty() ||
+          risposta_quattro == null || risposta_quattro.trim().isEmpty() ||
+          risposta_esatta == null) {
+          redirectAttributes.addFlashAttribute("messaggio", "Errore: Tutti i campi devono essere compilati e una risposta corretta deve essere selezionata!");
+          return "redirect:/inserimentoDomanda";
       }
     	
       
@@ -99,7 +112,8 @@ public class InserimentoDomandaController {
         System.out.println("Creo l'oggetto nuovaDomanda");
         Domanda_Risposta nuovaDomanda = new Domanda_Risposta();
         System.out.println("Oggetto nuovaDomanda creato");
-
+        
+        
 
         nuovaDomanda.setLinguaggio(linguaggio.get());
         nuovaDomanda.setDomanda(domanda);
@@ -109,14 +123,17 @@ public class InserimentoDomandaController {
         nuovaDomanda.setRisposta_quattro(risposta_quattro);
         nuovaDomanda.setRisposta_esatta(risposta_esatta);
 
+        
         domandaRispostaService.salvaInserimentoDomandaRisposta(nuovaDomanda);
+     
 
+        redirectAttributes.addFlashAttribute("messaggio", "Domanda inserita correttamente!");
         System.out.println("--------------------------------");
         System.out.println("Linguaggio selezionato nel form: " + linguaggio.get());
         System.out.println("--------------------------------");
         System.out.println("Domande inserite nel form: " + nuovaDomanda);
 
-        return "redirect:/landingPageDocente";
+        return "redirect:/inserimentoDomanda";
     }
 
 

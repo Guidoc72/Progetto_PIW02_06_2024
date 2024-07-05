@@ -28,7 +28,7 @@
 <div class="container mt-5">
 <h1 style="padding-bottom: 60px;color:FireBrick" th:text="'Quiz Disponibili: ' +  ${numeroQuiz}"></h1>
 
-<form action="/visualizzazione_quiz.html" method="post" th:object="${quiz}">
+<form action="/visualizzazione_quiz" method="post" th:object="${quiz}">
         <div class="question" th:each="listaQuiz , iterStat : ${quiz} ">
 
 <div class="question-box">

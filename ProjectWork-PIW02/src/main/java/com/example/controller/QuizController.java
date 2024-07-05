@@ -152,7 +152,7 @@ public class QuizController {
     }
 	
     @PostMapping("/creaQuiz")
-    public String createQuizWithRandomDomande(@RequestParam("linguaggioId") Long linguaggioId) {
+    public String createQuizWithRandomDomande(@RequestParam("linguaggioId") Long linguaggioId,Model model) {
     	
     	System.err.println("entro nel POSTMAPPING");
     	
@@ -160,10 +160,16 @@ public class QuizController {
         	System.err.println("entro nel TRY");
             // Crea un nuovo quiz associato al linguaggio e assegna 10 domande casuali
             quizService.createQuizWithRandomDomande(linguaggioId);
-            System.err.println("QUIZ CREATO");
-            return "redirect:/landingPageDocente"; 
+            System.err.println("quiz creato");
+            List<Linguaggio> linguaggi = linguaggioService.getAllLinguaggi();
+            model.addAttribute("linguaggi", linguaggi);
+            model.addAttribute("successMessage", "Quiz creato con successo");
+            return "creaQuiz"; 
         } catch (IllegalArgumentException e) {
-            return "redirect:/error";
+        	List<Linguaggio> linguaggi = linguaggioService.getAllLinguaggi();
+            model.addAttribute("linguaggi", linguaggi);
+            model.addAttribute("errorMessage", "Si è verificato un errore durante la creazione del quiz.");
+            return "creaQuiz";
         }
     }
 
