@@ -92,10 +92,10 @@ public class QuizController {
             
             if (exists) {
             	errorMessages.add("Studente già assegnato al quiz selezionato");
-            	model.addAttribute("errorMessages", errorMessages);
-                model.addAttribute("quizzes", quizService.getAllQuizzes());
-                model.addAttribute("utenti", utenteService.getAllUtenti());
-                return "assegnazioneQuizStudente";
+//            	model.addAttribute("errorMessages", errorMessages);
+//                model.addAttribute("quizzes", quizService.getAllQuizzes());
+//                model.addAttribute("utenti", utenteService.getAllUtenti());
+//               return "assegnazioneQuizStudente";
             } else {
             	quizService.assegnaQuiz(quizId, utenteIdList);
             	
@@ -112,13 +112,16 @@ public class QuizController {
             	
             }
         }
-        
-        model.addAttribute("successMessages", successMessages);
-        System.err.println("Messaggio di successo INVIATO");
-        model.addAttribute("errorMessages", errorMessages);
-        System.err.println("Messaggio di errore INVIATO");
-        model.addAttribute("quizzes", quizService.getAllQuizzes());
-        model.addAttribute("utenti", utenteService.getAllUtenti());
+        if (!successMessages.isEmpty()) {
+        	model.addAttribute("successMessages", successMessages);
+        	System.err.println("Messaggio di successo INVIATO");
+        }	
+        if (!errorMessages.isEmpty()) {
+        	model.addAttribute("errorMessages", errorMessages);
+        	System.err.println("Messaggio di errore INVIATO");
+        }	
+        	model.addAttribute("quizzes", quizService.getAllQuizzes());
+        	model.addAttribute("utenti", utenteService.getAllUtenti());
 		
 		return "assegnazioneQuizStudente";
 	}
@@ -165,7 +168,7 @@ public class QuizController {
             model.addAttribute("linguaggi", linguaggi);
             model.addAttribute("successMessage", "Quiz creato con successo");
             return "creaQuiz"; 
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
         	List<Linguaggio> linguaggi = linguaggioService.getAllLinguaggi();
             model.addAttribute("linguaggi", linguaggi);
             model.addAttribute("errorMessage", "Si è verificato un errore durante la creazione del quiz.");
