@@ -211,7 +211,7 @@ public class QuizController {
         } catch (Exception e) {
         	List<Linguaggio> linguaggi = linguaggioService.getAllLinguaggi();
             model.addAttribute("linguaggi", linguaggi);
-            model.addAttribute("errorMessage", "Si è verificato un errore durante la creazione del quiz.");
+            model.addAttribute("errorMessage", "Errore: devono essere presenti 10 domande.");
             return "creaQuiz";
         }
     }
