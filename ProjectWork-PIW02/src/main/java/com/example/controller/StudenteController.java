@@ -281,7 +281,7 @@ public class StudenteController {
 
 	      
 	    	
-	    	return null;
+	    	return "password-modificata";
 	    }
 	    
 	
