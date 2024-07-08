@@ -84,7 +84,27 @@ public class InserimentoDomandaController {
             @RequestParam("risposta_tre") String risposta_tre,
             @RequestParam("risposta_quattro") String risposta_quattro,
             @RequestParam(name = "risposta_esatta", required = false) Integer risposta_esatta,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes, Model model) {
+    	String mail = null;								/////////////////////////////////// INIZIO
+		String ruolo = null;
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		boolean connesso = true;
+		 if (authentication != null && authentication.isAuthenticated()) {							
+			    Object principal = authentication.getPrincipal();
+			    if (principal.equals("anonymousUser")) {	
+			    	connesso = false;													/// METODO PER NAVBAR
+			  } 	
+			    if (principal instanceof UserDetails) {
+				      UserDetails user = (UserDetails) principal;
+				      UserDetailsImpl user2 = (UserDetailsImpl) user;
+				       mail = user2.getUsername(); 
+				       Utente utente = utenteRepository.findBymail(mail);
+				       ruolo = ruoloRepository.findByid(utente.getRuolo());
+				    } 
+		 }
+		
+	model.addAttribute("connesso",connesso);
+	model.addAttribute("ruolo",ruolo);					//////////////////////////////////// FINE
 
     	
         // Recupera il linguaggio selezionato dal database

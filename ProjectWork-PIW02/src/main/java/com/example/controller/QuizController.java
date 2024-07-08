@@ -80,6 +80,26 @@ public class QuizController {
 			@RequestParam List<Long> utenteIdList,
 			Model model
 			) {
+		String mail = null;								/////////////////////////////////// INIZIO
+		String ruolo = null;
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		boolean connesso = true;
+		 if (authentication != null && authentication.isAuthenticated()) {							
+			    Object principal = authentication.getPrincipal();
+			    if (principal.equals("anonymousUser")) {	
+			    	connesso = false;													/// METODO PER NAVBAR
+			  } 	
+			    if (principal instanceof UserDetails) {
+				      UserDetails user = (UserDetails) principal;
+				      UserDetailsImpl user2 = (UserDetailsImpl) user;
+				       mail = user2.getUsername(); 
+				       Utente utente = utenteRepository.findBymail(mail);
+				       ruolo = ruoloRepository.findByid(utente.getRuolo());
+				    } 
+		 }
+		
+	model.addAttribute("connesso",connesso);
+	model.addAttribute("ruolo",ruolo);					//////////////////////////////////// FINE
 		
         List<String> successMessages = new ArrayList<>();
         List<String> errorMessages = new ArrayList<>();
@@ -156,6 +176,26 @@ public class QuizController {
 	
     @PostMapping("/creaQuiz")
     public String createQuizWithRandomDomande(@RequestParam("linguaggioId") Long linguaggioId,Model model) {
+    	String mail = null;								/////////////////////////////////// INIZIO
+		String ruolo = null;
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		boolean connesso = true;
+		 if (authentication != null && authentication.isAuthenticated()) {							
+			    Object principal = authentication.getPrincipal();
+			    if (principal.equals("anonymousUser")) {	
+			    	connesso = false;													/// METODO PER NAVBAR
+			  } 	
+			    if (principal instanceof UserDetails) {
+				      UserDetails user = (UserDetails) principal;
+				      UserDetailsImpl user2 = (UserDetailsImpl) user;
+				       mail = user2.getUsername(); 
+				       Utente utente = utenteRepository.findBymail(mail);
+				       ruolo = ruoloRepository.findByid(utente.getRuolo());
+				    } 
+		 }
+		
+	model.addAttribute("connesso",connesso);
+	model.addAttribute("ruolo",ruolo);					//////////////////////////////////// FINE
     	
     	System.err.println("entro nel POSTMAPPING");
     	

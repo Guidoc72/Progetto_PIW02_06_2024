@@ -69,6 +69,26 @@ public class UtenteController {
 //            @RequestParam("mail") String mail,
 //            @RequestParam("ruolo") Long ruolo,
             Model model) {
+    	String mail = null;								/////////////////////////////////// INIZIO
+		String ruolo = null;
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		boolean connesso = true;
+		 if (authentication != null && authentication.isAuthenticated()) {							
+			    Object principal = authentication.getPrincipal();
+			    if (principal.equals("anonymousUser")) {	
+			    	connesso = false;													/// METODO PER NAVBAR
+			  } 	
+			    if (principal instanceof UserDetails) {
+				      UserDetails user = (UserDetails) principal;
+				      UserDetailsImpl user2 = (UserDetailsImpl) user;
+				       mail = user2.getUsername(); 
+				       Utente utente = utenteRepository.findBymail(mail);
+				       ruolo = ruoloRepository.findByid(utente.getRuolo());
+				    } 
+		 }
+		
+	model.addAttribute("connesso",connesso);
+	model.addAttribute("ruolo",ruolo);					//////////////////////////////////// FINE
 
 //    	System.out.println("DATI PROVENTINTI DAL GETMAPPING -> " + Studenti.getId() + Studenti.getNome() + Studenti.getCognome() + Studenti.getMail() + Studenti.getRuolo());
     	
