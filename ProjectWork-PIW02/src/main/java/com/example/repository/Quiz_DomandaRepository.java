@@ -25,5 +25,8 @@ public interface Quiz_DomandaRepository extends JpaRepository<Quiz_Domanda, Long
 	@Modifying
 	@Query(value = "INSERT INTO Quiz_Domande (id_domanda, id_quiz) VALUES (:idDomanda, :idQuiz)", nativeQuery = true)
 	void aggiungiQuiz(@Param("idQuiz") Long idQuiz, @Param("idDomanda") Long idDomanda);
+	
+    @Query("SELECT qd.id_quiz FROM Quiz_Domanda qd WHERE qd.id_domanda = :idDomanda")
+    List<Long> findIdQuizByIdDomanda(@Param("idDomanda") Long idDomanda);
 
 }

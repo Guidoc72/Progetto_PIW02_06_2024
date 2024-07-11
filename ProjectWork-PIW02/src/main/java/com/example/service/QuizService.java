@@ -3,6 +3,7 @@ package com.example.service;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,18 +61,28 @@ public class QuizService {
     
     
     public List<Quiz> getAllQuizzes() {
+        // Recupera tutti i quiz dal repository
         List<Quiz> quizzes = quizRepository.findAll();
-        // itera nella lista quizzes 
+        
+        // Filtra i quiz in base al numero di domande per linguaggio
+        quizzes = quizzes.stream().filter(quiz -> {
+            // Conta il numero di domande per il linguaggio del quiz
+            long count = domandaRispostaRepository.countByLinguaggioId(quiz.getId_linguaggio());
+            // Includi solo i quiz i cui linguaggi hanno almeno 10 domande
+            return count >= 10;
+        }).collect(Collectors.toList());
+        
+        // Itera sulla lista filtrata di quiz per impostare il nome del linguaggio
         for (Quiz quiz : quizzes) {
-        	// recupera l'id_linguaggio di quiz tramite il findbyId dell'oggetto linguaggio
+            // Recupera il linguaggio per il quiz
             Linguaggio linguaggio = linguaggioRepository.findById(quiz.getId_linguaggio()).orElse(null);
-            System.out.println("sono nel service | LINGUAGGIO -> " + linguaggio);
-            // se il linguaggio diverso da null -> trova il nome corrispondente
+            // Se il linguaggio è trovato, imposta il nome del linguaggio nel quiz
             if (linguaggio != null) {
                 quiz.setNomeLinguaggio(linguaggio.getNomeArgomento());
-                System.out.println("sono nel service | SONO NEL if > for > getAllQuiz() | NOME LINGUAGGIO -> " + linguaggio.getNomeArgomento());
             }
         }
+        
+        // Ritorna la lista filtrata di quiz
         return quizzes;
     }
     
@@ -152,6 +163,11 @@ public class QuizService {
             domandeRisposta.remove(randomIndex);
 		}
 	}
+	
+	
+    public String getNomeArgomento(Long id_linguaggio) {
+        return quizRepository.findNomeArgomentoByIdLinguaggio(id_linguaggio);
+    }
     
 
 }

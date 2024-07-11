@@ -69,7 +69,7 @@ public class QuizController {
 		model.addAttribute("ruolo",ruolo);					//////////////////////////////////// FINE
 		
 		model.addAttribute("quizzes", quizService.getAllQuizzes());
-		model.addAttribute("utenti", utenteService.getAllUtenti());
+		model.addAttribute("utenti", utenteService.getAllStudenti());
 		
 		return "assegnazioneQuizStudente";
 	}
@@ -112,23 +112,16 @@ public class QuizController {
             
             if (exists) {
             	errorMessages.add("Studente già assegnato al quiz selezionato");
-//            	model.addAttribute("errorMessages", errorMessages);
-//                model.addAttribute("quizzes", quizService.getAllQuizzes());
-//                model.addAttribute("utenti", utenteService.getAllUtenti());
-//               return "assegnazioneQuizStudente";
             } else {
             	quizService.assegnaQuiz(quizId, utenteIdList);
             	
             	Utente utente = utenteService.findUtenteById(utenteId);
             	Optional<Quiz> quiz = quizService.getQuizById(quizId);
             	
-            	Optional<Linguaggio> linguaggio = linguaggioService.getLinguaggioById(quiz.get().getId_linguaggio());
-            	
-            	String nomeLinguaggio = linguaggio.get().getNomeArgomento();
-            	
-            	System.out.println("sono nel controller | LINGUAGGIO QUIZ -> " + nomeLinguaggio);
+                String nomeArgomento = quizService.getNomeArgomento(quiz.get().getId_linguaggio());
+                quiz.get().setNomeLinguaggio(nomeArgomento);
 
-            	successMessages.add(utente.getNome() + " " + utente.getCognome() + " <" + utente.getMail() + "> assegnato a " + nomeLinguaggio + " QUIZ " + quiz.get().getId());
+            	successMessages.add(utente.getNome() + " " + utente.getCognome() + " <" + utente.getMail() + "> assegnato a " + nomeArgomento + " QUIZ " + quiz.get().getId());
             	
             }
         }
@@ -141,7 +134,7 @@ public class QuizController {
         	System.err.println("Messaggio di errore INVIATO");
         }	
         	model.addAttribute("quizzes", quizService.getAllQuizzes());
-        	model.addAttribute("utenti", utenteService.getAllUtenti());
+        	model.addAttribute("utenti", utenteService.getAllStudenti());
 		
 		return "assegnazioneQuizStudente";
 	}
@@ -169,8 +162,8 @@ public class QuizController {
 		
 	model.addAttribute("connesso",connesso);
 	model.addAttribute("ruolo",ruolo);					//////////////////////////////////// FINE
-        List<Linguaggio> linguaggi = linguaggioService.getAllLinguaggi();
-        model.addAttribute("linguaggi", linguaggi);
+        
+        model.addAttribute("linguaggi", linguaggioService.getAllLinguaggi());
         return "creaQuiz"; 
     }
 	

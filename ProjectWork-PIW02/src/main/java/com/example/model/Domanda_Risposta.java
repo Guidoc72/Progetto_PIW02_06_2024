@@ -12,6 +12,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
+
 @Entity
 @Table(name = "domande_risposte")
 public class Domanda_Risposta {
@@ -24,6 +25,9 @@ public class Domanda_Risposta {
 	@Column(insertable=false, updatable=false)
 	private Long id_linguaggio;
 	
+	@Transient
+	private String nomeLinguaggio;
+
 	@Column(length = 500)
 	private String domanda;
 	
@@ -45,6 +49,7 @@ public class Domanda_Risposta {
 	@Transient
 	private int risposta_selezionata;
 	
+
 	@Transient
 	private Long idQuiz;
 	
@@ -139,6 +144,14 @@ public class Domanda_Risposta {
 
 	public void setLinguaggio(Linguaggio linguaggio) {
 		this.linguaggio = linguaggio;
+	}
+	
+	public String getNomeLinguaggio() {
+		return nomeLinguaggio;
+	}
+
+	public void setNomeLinguaggio(String nomeLinguaggio) {
+		this.nomeLinguaggio = nomeLinguaggio;
 	}
 
 	public String getDomanda() {

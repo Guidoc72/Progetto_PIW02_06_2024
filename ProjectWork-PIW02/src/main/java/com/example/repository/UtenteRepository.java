@@ -1,5 +1,6 @@
 package com.example.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -62,5 +63,8 @@ public interface UtenteRepository extends JpaRepository<Utente, Long> {
     @Transactional
     @Query("update Utente u set u.password_utente = :password where u.mail = :mail")
     void updatePasswordbymail(@Param("password") String password, @Param("mail") String mail);
+    
+    @Query("select u from Utente u where u.ruolo = :ruolo")
+    List<Utente> findByRuolo(@Param("ruolo") Long ruolo);
 
 }

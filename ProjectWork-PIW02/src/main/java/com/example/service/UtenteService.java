@@ -9,6 +9,7 @@ import com.example.repository.UtenteRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UtenteService {
@@ -30,9 +31,13 @@ public class UtenteService {
         return utenteRepository.existsByMail(mail);
     }
 
-    // Metodo per recuperare tutti gli utenti presenti nel database
-    public List<Utente> getAllUtenti() {
-        return utenteRepository.findAll();
+    // Metodo per recuperare tutti gli utenti con ruolo studente
+    public List<Utente> getAllStudenti() {
+        // Ruolo studente rappresentato dal valore 2L
+        Long ruoloStudente = 2L;
+        
+        // Chiama il repository per trovare tutti gli utenti con ruolo studente
+        return utenteRepository.findByRuolo(ruoloStudente);
     }
 
     // Metodo transazionale per aggiornare l'utente con un dato ID

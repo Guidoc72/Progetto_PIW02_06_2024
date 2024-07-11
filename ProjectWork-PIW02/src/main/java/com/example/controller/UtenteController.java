@@ -55,7 +55,7 @@ public class UtenteController {
         // Aggiunge un nuovo oggetto Utente al modello per il form di inserimento/modifica
         model.addAttribute("Studenti", studenti);
         // Recupera tutti gli utenti dal servizio e li aggiunge al modello per la visualizzazione
-        model.addAttribute("Utente", utenteService.getAllUtenti());
+        model.addAttribute("Utente", utenteService.getAllStudenti());
         // Ritorna il nome della vista da visualizzare (modificaStudente.html in questo caso)
         return "modificaStudente";
     }
@@ -105,7 +105,7 @@ public class UtenteController {
             System.err.println("-------- ERRORE CAMPI VUOTI ---------");
             
             					// Ricarica gli utenti nel modello
-            					model.addAttribute("Utente", utenteService.getAllUtenti());
+            					model.addAttribute("Utente", utenteService.getAllStudenti());
             
             // Ritorna alla pagina di modifica con il messaggio di errore
             return "modificaStudente";
@@ -123,7 +123,7 @@ public class UtenteController {
             model.addAttribute("success", "Utente modificato con successo.");
             // Stampa dati utente aggiornati
             					// Ricarica gli utenti nel modello
-            					model.addAttribute("Utente", utenteService.getAllUtenti());
+            					model.addAttribute("Utente", utenteService.getAllStudenti());
 //            System.out.println("UTENTE AGGIORNATO CON SUCCESSO: \n" + "[ id: " + id + " ]" + "[ nome: " + nome + " ]" + "[ cognome: " + cognome + " ]" + "[ mail: " + mail + "]" + "[ ruolo: " + ruolo + "]");
             System.out.println("REGISTRAZIONE AVVENUTA CON SUCECSSO");
             return "modificaStudente";

@@ -36,11 +36,11 @@ public class GlobalExceptionHandlerController {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handleNotFoundException(NoHandlerFoundException ex, Model model, HttpSession session) {
 		
-//		String username = getLoggedInUsername();
-//		String nome = utenteService.findUtenteByEmail(username).getNome();
+	String username = getLoggedInUsername();
+		String nome = utenteService.findUtenteByEmail(username).getNome();
 		
         model.addAttribute("errorMessage", "Pagina non trovata.");
-//        session.setAttribute("nomeUtente", nome);
+        session.setAttribute("nomeUtente", nome);
         return "notfoundview"; // Restituisci la vista della pagina di errore
     }
 	
@@ -51,11 +51,11 @@ public class GlobalExceptionHandlerController {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String handleMyException(MyException ex, Model model, HttpSession session) {
     	
-//    	String username = getLoggedInUsername();
-//		String nome = utenteService.findUtenteByEmail(username).getNome();
+  	String username = getLoggedInUsername();
+		String nome = utenteService.findUtenteByEmail(username).getNome();
 		
         model.addAttribute("errorMessage", ex.getMessage());
-//        session.setAttribute("nomeUtente", nome);
+       session.setAttribute("nomeUtente", nome);
         return "/errori.html"; // Restituisci la vista della pagina di errore
     }
 

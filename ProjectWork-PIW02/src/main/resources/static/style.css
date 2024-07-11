@@ -28,7 +28,7 @@ body {
 
 .card-title {
 	text-align: center;
-	margin-bottom: 1rem;
+	/*margin-bottom: 1rem;*/
 }
 
 .crea, .conferma, .abilitazione, .salva, .invia, .crea {

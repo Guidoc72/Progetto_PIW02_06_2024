@@ -18,4 +18,7 @@ public interface QuizRepository extends JpaRepository<Quiz, Long>{
 	@Query("SELECT MAX(q.id) FROM Quiz q")
     Optional<Long> findMaxId();
 	
+    @Query("SELECT l.nomeArgomento FROM Linguaggio l WHERE l.id = :id_linguaggio")
+    String findNomeArgomentoByIdLinguaggio(@Param("id_linguaggio") Long id_linguaggio);
+	
 }
